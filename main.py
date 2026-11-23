@@ -5,7 +5,6 @@
 运行环境在 venv-qt.nosync/（目录名不能以点开头: 桌面被 iCloud 同步，点开头的目录里的文件会被系统
 标成「隐藏」，Qt 会因此找不到自己的插件）。
 """
-import fcntl
 import os
 import subprocess
 import sys
@@ -14,13 +13,25 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
+IS_MAC = sys.platform == "darwin"
+IS_WIN = os.name == "nt"
 
-VERSION = "4.1.7"
+VERSION = "4.3.1"
 LOCK = ROOT / ".agg.lock"
 _lock_fd: int | None = None
 
 
 def _alert(text: str):
+    if IS_WIN:      # 11-23：Windows 用系统消息框
+        try:
+            import ctypes
+            ctypes.windll.user32.MessageBoxW(0, text.replace("\\n", "\n"), "幻想引擎", 0x40)
+        except Exception:
+            pass
+        return
+    if not IS_MAC:
+        print(text, file=sys.stderr)
+        return
     try:
         subprocess.run(["/usr/bin/osascript", "-e",
                         f'display dialog "{text}" buttons {{"好"}} default button 1 with title "幻想引擎"'],
@@ -42,11 +53,18 @@ def _other_instance() -> int:
     except Exception:
         old = 0
     try:
-        fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        if IS_WIN:      # 11-23：Windows 没有 fcntl，用 msvcrt 锁第一个字节
+            import msvcrt
+            os.lseek(fd, 0, os.SEEK_SET)
+            msvcrt.locking(fd, msvcrt.LK_NBLCK, 1)
+        else:
+            import fcntl
+            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
     except OSError:
         os.close(fd)
         return old or -1
-    if old and old != os.getpid():   # 没人持锁，但文件里有 PID: 可能是旧 Tk 版
+    # 没人持锁，但文件里有 PID: 可能是旧 Tk 版（只在 Mac 上有过）。Windows 上不能用 os.kill(pid, 0) 探活——那会直接结束那个进程
+    if IS_MAC and old and old != os.getpid():
         try:
             os.kill(old, 0)
             cmd = subprocess.run(["ps", "-p", str(old), "-o", "command="],
@@ -78,7 +96,7 @@ def release_lock():
 
 
 def activate_existing(pid: int):
-    if pid <= 0:
+    if pid <= 0 or not IS_MAC:
         return
     try:
         subprocess.run(["/usr/bin/osascript", "-e",
@@ -92,6 +110,8 @@ def activate_existing(pid: int):
 def _unhide_runtime():
     """桌面被 iCloud 同步时，系统偶尔会给运行环境里的文件打上「隐藏」标记，Qt 会因此找不到自己的插件。
     启动时看一眼插件目录，发现了就把整个运行环境的标记清掉。"""
+    if not IS_MAC:
+        return
     try:
         import stat
 

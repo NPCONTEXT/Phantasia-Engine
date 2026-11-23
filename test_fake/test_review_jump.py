@@ -29,7 +29,7 @@ from test_pause import pump_for  # noqa: E402
 
 def tools() -> list[dict]:
     base = {"env": "none", "workdir": str(HERE), "need_device": False, "album": "测试", "tasks": ["一句"],
-            "report_steps": True, "command": ["/bin/sh", "-c", "echo ok"]}
+            "report_steps": True, "command": [sys.executable, "-c", "print('ok')"]}
     return [dict(base, id="fa", name="测试 · A"), dict(base, id="fb", name="测试 · B"), dict(base, id="fc", name="测试 · C")]
 
 

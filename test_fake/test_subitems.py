@@ -26,12 +26,17 @@ from pathlib import Path
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 HERE = Path(__file__).resolve().parent
-FAKE_PY = str(HERE.parent / "bh3_auto" / ".venv" / "bin" / "python")
+FAKE_PY = str(HERE.parent / "bh3_auto" / ".venv" / ("Scripts/python.exe" if os.name == "nt" else "bin/python"))   # 11-24：Windows 的 venv 解释器在 Scripts\python.exe
 HEAD = ["进记忆战场", "战场减负"]
 LABELS_A = ["陨星-奈埃尔 SSS", "伪神奥托 SSS", "影骑士·月轮 SS"]
 LABELS_B = ["魔女-帕凡 SSS", "天命主教 SS", "往世乐土守卫 SS"]
-SHOT_IDLE = Path("/tmp/phantasia_subitems_idle.png")
-SHOT_PLAY = Path("/tmp/phantasia_subitems_playing.png")
+# 11-24 Windows：截图放系统临时目录；测试自己的输出用 UTF-8（英文 Windows 的控制台、管道是 cp1252，打印中文会报错）
+SHOT_IDLE = Path(tempfile.gettempdir()) / "phantasia_subitems_idle.png"
+SHOT_PLAY = Path(tempfile.gettempdir()) / "phantasia_subitems_playing.png"
+FULL_SHOT = Path(tempfile.gettempdir()) / "_phantasia_full.png"
+for _s in (sys.stdout, sys.stderr):
+    if hasattr(_s, "reconfigure"):
+        _s.reconfigure(encoding="utf-8", errors="replace")
 BASE_KEYS = ["id", "name", "start", "end", "dur", "result", "exit", "steps", "missed", "facts", "outcome",
              "log", "shot"]
 
@@ -96,6 +101,8 @@ class Env:
                     c["sentinel"] = rt.sentinel.read_text(encoding="utf-8")
                 except Exception:
                     pass
+            elif ok and rt is not None:      # 11-23：Python 版哨兵（Windows、PE_SENTINEL=py）不写脚本文件，命令跟在它命令行的 -- 后面
+                c["sentinel"] = " ".join(str(x) for x in rt.proc.args)
             self.calls.append(c)
             return ok, msg
         self.s.runner.start = spy
@@ -173,9 +180,10 @@ class Checker:
 def plain_tool(tmp: Path) -> dict:
     wd = tmp / "plain"
     wd.mkdir(parents=True, exist_ok=True)
-    script = "echo '== 第一句'; sleep 0.2; echo '== 第二句'; sleep 0.1; echo '完成：第一句=ok，第二句=ok'"
+    script = ("import time; print('== 第一句', flush=True); time.sleep(0.2); print('== 第二句', flush=True); "
+              "time.sleep(0.1); print('完成：第一句=ok，第二句=ok', flush=True)")
     return {"id": "plain_echo", "name": "假普通工具（只 echo）", "env": "none", "workdir": str(wd),
-            "command": ["/bin/sh", "-c", script], "need_device": False, "tasks": ["第一句", "第二句"],
+            "command": [sys.executable, "-c", script], "need_device": False, "tasks": ["第一句", "第二句"],
             "report_steps": True, "album": "测试"}
 
 
@@ -383,7 +391,7 @@ def main() -> int:
         c.ok(env.W.T.MUTED in row2.nm.styleSheet(), f"第 2 个字没灰显：{row2.nm.styleSheet()}")
         c.ok([r.box._mode for r in win._lyrics[2:]] == ["tick", "box", "tick"], "勾选框状态不对")
         c.ok(not any(r.box._dim for r in win._lyrics[2:]), "空闲时勾选框不该半透明")
-        win.grab().save("/tmp/_phantasia_full.png")          # 只为触发一次完整布局
+        win.grab().save(str(FULL_SHOT))          # 只为触发一次完整布局
         win.detail_card.grab().save(str(SHOT_IDLE))
         mid = {}
 
@@ -862,7 +870,7 @@ def main() -> int:
         except Exception:
             pass
         shutil.rmtree(tmp, ignore_errors=True)
-        Path("/tmp/_phantasia_full.png").unlink(missing_ok=True)
+        FULL_SHOT.unlink(missing_ok=True)
 
     print()
     bad = 0

@@ -1549,6 +1549,96 @@
    "env": "幻灭·影星",
    "down_s": null,
    "log": "risk_try_1122-035204"
+  },
+  {
+   "time": "11-23 23:50",
+   "zone": "右",
+   "res": "died",
+   "full": false,
+   "game_time": null,
+   "score": null,
+   "layer": {
+    "当前积分": null,
+    "战斗时长": "02:12"
+   },
+   "hud_gone_s": null,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "冰·冰霜",
+   "down_s": 184.2,
+   "log": "risk_try_1123-234705"
+  },
+  {
+   "time": "11-23 23:55",
+   "zone": "右",
+   "res": "died",
+   "full": false,
+   "game_time": null,
+   "score": null,
+   "layer": {
+    "当前积分": null,
+    "战斗时长": "03:16"
+   },
+   "hud_gone_s": null,
+   "row": 1,
+   "rec": "记住的队",
+   "env": "冰·冰霜",
+   "down_s": 259.2,
+   "log": "risk_try_1123-235059"
+  },
+  {
+   "time": "11-24 00:00",
+   "zone": "右",
+   "res": "died",
+   "full": false,
+   "game_time": null,
+   "score": null,
+   "layer": {},
+   "hud_gone_s": null,
+   "row": 2,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "冰·冰霜",
+   "down_s": 220.9,
+   "log": "risk_try_1123-235623"
+  },
+  {
+   "time": "11-24 00:04",
+   "zone": "右",
+   "res": "win",
+   "full": false,
+   "game_time": "02:14",
+   "score": 3555,
+   "layer": {
+    "当前积分": null,
+    "战斗时长": "02:13"
+   },
+   "hud_gone_s": 191.7,
+   "row": 2,
+   "rec": "记住的队",
+   "env": "冰·冰霜",
+   "down_s": null,
+   "log": "risk_try_1124-000048"
+  },
+  {
+   "time": "11-24 00:08",
+   "zone": "右",
+   "res": "fail",
+   "full": false,
+   "game_time": null,
+   "score": null,
+   "layer": {},
+   "hud_gone_s": 173.3,
+   "row": 2,
+   "rec": "记住的队",
+   "env": "惧冰·冰霜",
+   "down_s": 169.6,
+   "log": "risk_try_1124-000516"
   }
  ],
  "best_row": 2,

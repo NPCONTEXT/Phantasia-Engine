@@ -1,0 +1,2 @@
+# Windows 的批处理用 CRLF 换行（cmd 对只有 LF 的 .bat 偶尔解析出错）
+*.bat text eol=crlf

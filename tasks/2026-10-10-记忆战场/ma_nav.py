@@ -27,9 +27,12 @@ except ImportError:
             return False
 
 HERE = Path(__file__).resolve().parent
+import sys  # noqa: E402
+sys.path.insert(0, str(HERE.parent.parent / "bh3_auto"))
+from lib.pe_platform import adb_path, ocr_engine, ocr_lines, rapid_text_line, tmp_dir  # noqa: E402  11-23 跨平台（Mac 上照旧：Homebrew 的 adb、/tmp、Vision 识字）
 OCR = HERE.parent.parent / "bh3_auto/ocr/ocr"
 import os  # noqa: E402  11-17 无线调试：用幻想引擎经 ANDROID_SERIAL 指定的设备；单独运行时才用下面这个序列号
-ADB = ["/opt/homebrew/bin/adb", "-s", os.environ.get("ANDROID_SERIAL") or "YOUR_DEVICE_SERIAL"]
+ADB = [adb_path(), "-s", os.environ.get("ANDROID_SERIAL") or "YOUR_DEVICE_SERIAL"]
 BOSS_Y = (300, 500, 690)          # 左栏 0 陨星-奈埃尔 / 1 伪神奥托 / 2 影骑士·月轮（本期顺序）
 
 
@@ -52,10 +55,10 @@ def tap(x, y, w=2.5):
 
 def ocr():
     pause_point()        # 11-02 幻想引擎要暂停就停在截图前（战斗里不停），继续后重新截图
-    p = Path("/tmp/ma_nav.png")
+    p = tmp_dir() / "ma_nav.png"
     p.write_bytes(subprocess.run(ADB + ["exec-out", "screencap", "-p"], capture_output=True, timeout=20).stdout)
     out = []
-    for line in subprocess.run([str(OCR), str(p)], capture_output=True, text=True, timeout=30).stdout.splitlines():
+    for line in ocr_lines(p, timeout=30).splitlines():
         try:
             d = json.loads(line)
         except json.JSONDecodeError:
@@ -108,7 +111,7 @@ def to_detail(idx, log=print):
     return name
 
 
-def detail_difficulty(png="/tmp/ma_nav.png"):
+def detail_difficulty(png=str(tmp_dir() / "ma_nav.png")):
     """详情页名字后面的花体难度字（SS / SSS）。单次 OCR 不稳（SSS 读成 S55、S85、55），
     裁标题区按 1/1.5/2/2.5/3/4 倍各读一次，5、8 当 S，只认 SS / SSS，投票取多数；平票或读不出 None。
     10-10：只用 1/2/3 倍时奈埃尔实机读成「555」「55」平票 → None；改 6 档后 4 张实拍都投对。"""
@@ -120,9 +123,9 @@ def detail_difficulty(png="/tmp/ma_nav.png"):
     votes = []
     for k in (1, 1.5, 2, 2.5, 3, 4):
         c = cv2.resize(crop, None, fx=k, fy=k, interpolation=cv2.INTER_CUBIC)
-        p = Path("/tmp/ma_diff.png")
+        p = tmp_dir() / "ma_diff.png"
         cv2.imwrite(str(p), c)
-        for line in subprocess.run([str(OCR), str(p)], capture_output=True, text=True, timeout=30).stdout.splitlines():
+        for line in ocr_lines(p, timeout=30).splitlines():
             try:
                 t = json.loads(line)["text"]
             except (json.JSONDecodeError, KeyError):
@@ -274,7 +277,7 @@ def ma_status(it=None):
     return bosses, left
 
 
-def left_from_png(png="/tmp/ma_nav.png"):
+def left_from_png(png=str(tmp_dir() / "ma_nav.png")):
     """今日剩余挑战次数：整屏识字常漏掉单个数字（10-15 一晚 4 次都是 None，屏上是 0）。
     裁「今日剩余挑战次数」右边的数字，放大 2/3/4 倍各读一次；U、O、D 当 0，l、I 当 1；投票取多数，读不出 None。"""
     import cv2
@@ -287,15 +290,21 @@ def left_from_png(png="/tmp/ma_nav.png"):
     votes = []
     for k in (2, 3, 4):
         c = cv2.resize(crop, None, fx=k, fy=k, interpolation=cv2.INTER_CUBIC)
-        p = Path("/tmp/ma_left.png")
+        p = tmp_dir() / "ma_left.png"
         cv2.imwrite(str(p), c)
-        for line in subprocess.run([str(OCR), str(p)], capture_output=True, text=True, timeout=30).stdout.splitlines():
+        for line in ocr_lines(p, timeout=30).splitlines():
             try:
                 t = json.loads(line)["text"]
             except (json.JSONDecodeError, KeyError):
                 continue
             t = t.translate(str.maketrans("UODoQlI|", "00000111"))
             d = "".join(ch for ch in t if ch.isdigit())
+            if d and len(d) <= 2:
+                votes.append(int(d))
+    if not votes and ocr_engine() == "rapid":     # 11-24：RapidOCR 框不出单独一个「0」，整块当一行字认（读成「数0」）
+        for k in (2, 3, 4):
+            t = rapid_text_line(cv2.resize(crop, None, fx=k, fy=k, interpolation=cv2.INTER_CUBIC))
+            d = "".join(ch for ch in t.translate(str.maketrans("UODoQlI|", "00000111")) if ch.isdigit())
             if d and len(d) <= 2:
                 votes.append(int(d))
     return max(set(votes), key=votes.count) if votes else None

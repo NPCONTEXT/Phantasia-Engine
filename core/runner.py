@@ -5,6 +5,7 @@ import shlex
 import shutil
 import signal
 import subprocess
+import sys
 import threading
 import time
 import uuid
@@ -16,6 +17,22 @@ from core import registry
 AGG_DIR = registry.AGG_DIR
 RUNS_DIR = AGG_DIR / "runs"
 LOGS_DIR = AGG_DIR / "logs"
+IS_WIN = os.name == "nt"
+SENTINEL_PY = Path(__file__).resolve().parent / "sentinel.py"
+
+
+def _has_console() -> bool:
+    """Windows：本进程有没有控制台（用 pythonw 起就没有，CTRL_BREAK 发不出去）。"""
+    try:
+        import ctypes
+        return bool(ctypes.windll.kernel32.GetConsoleWindow())
+    except Exception:
+        return False
+
+
+def py_sentinel() -> bool:
+    """11-23：Windows 没有 bash，用 Python 版哨兵（core/sentinel.py）；Mac 上默认还用下面的 bash 版，PE_SENTINEL=py 时也用 Python 版。"""
+    return IS_WIN or os.environ.get("PE_SENTINEL") == "py"
 
 SENTINEL_TMPL = """#!/bin/bash
 # 哨兵: 进程组内管理工具, 聚合前台死亡时自动清理并还原分辨率
@@ -147,10 +164,12 @@ class ToolRunner:
             LOGS_DIR.mkdir(parents=True, exist_ok=True)
             RUNS_DIR.mkdir(parents=True, exist_ok=True)
 
-            sentinel = RUNS_DIR / f"sentinel_{uuid.uuid4().hex[:8]}.sh"
-            script = SENTINEL_TMPL.replace("{CMD}", " ".join(shlex.quote(c) for c in cmd))
-            sentinel.write_text(script, encoding="utf-8")
-            os.chmod(sentinel, 0o755)
+            sentinel = None
+            if not py_sentinel():
+                sentinel = RUNS_DIR / f"sentinel_{uuid.uuid4().hex[:8]}.sh"
+                script = SENTINEL_TMPL.replace("{CMD}", " ".join(shlex.quote(c) for c in cmd))
+                sentinel.write_text(script, encoding="utf-8")
+                os.chmod(sentinel, 0o755)
             # 11-02 暂停协议：每次播放一个控制目录。界面放 pause 文件 = 请暂停；脚本写 state.json 报告（有它 = 接上了暂停）
             ctl = RUNS_DIR / "ctl" / f"{tool.get('id', 'tool')}_{uuid.uuid4().hex[:8]}"
             ctl.mkdir(parents=True, exist_ok=True)
@@ -161,16 +180,23 @@ class ToolRunner:
 
             try:
                 pkg = str(tool.get("package") or "") if seq else ""
+                if sentinel is None:     # Python 版哨兵：命令跟在 -- 后面
+                    argv = [sys.executable, str(SENTINEL_PY), str(os.getpid()), res, env.adb_bin(), pkg, "--", *cmd]
+                else:
+                    argv = ["/bin/bash", str(sentinel), str(os.getpid()), res, env.adb_bin(), pkg]
+                group = ({"creationflags": subprocess.CREATE_NEW_PROCESS_GROUP} if IS_WIN
+                         else {"start_new_session": True})      # 独立进程组（停止时整组收）
                 proc = subprocess.Popen(
-                    ["/bin/bash", str(sentinel), str(os.getpid()), res, env.adb_bin(), pkg],
+                    argv,
                     cwd=str(workdir),
                     env=cenv,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.STDOUT,
-                    start_new_session=True,  # 独立进程组
+                    **group,
                 )
             except Exception as e:
-                _unlink(sentinel)
+                if sentinel is not None:
+                    _unlink(sentinel)
                 shutil.rmtree(ctl, ignore_errors=True)
                 return False, f"启动失败: {e}"
 
@@ -287,11 +313,19 @@ class ToolRunner:
             return True
         rt.stopped_by_user = True
         try:
-            pgid = os.getpgid(rt.pid)
-            os.killpg(pgid, signal.SIGTERM)
-        except (ProcessLookupError, PermissionError):
+            if IS_WIN:      # 11-23：哨兵是用 CREATE_NEW_PROCESS_GROUP 起的，整组发 CTRL_BREAK，哨兵收到后收掉工具
+                if not _has_console():      # 11-24：CTRL_BREAK 只送得到共用同一个控制台的进程（用启动幻想引擎.bat 起就有）
+                    raise OSError("没有控制台，CTRL_BREAK 送不到")
+                os.kill(rt.pid, signal.CTRL_BREAK_EVENT)
+            else:
+                pgid = os.getpgid(rt.pid)
+                os.killpg(pgid, signal.SIGTERM)
+        except (ProcessLookupError, PermissionError, OSError):
             try:
-                rt.proc.terminate()
+                if IS_WIN:      # 11-24：只结束哨兵会把工具留下，直接收整棵树
+                    subprocess.run(["taskkill", "/PID", str(rt.pid), "/T", "/F"], capture_output=True, timeout=15)
+                else:
+                    rt.proc.terminate()
             except Exception:
                 pass
         deadline = time.time() + timeout
@@ -299,7 +333,10 @@ class ToolRunner:
             time.sleep(0.3)
         if rt.alive:
             try:
-                os.killpg(os.getpgid(rt.pid), signal.SIGKILL)
+                if IS_WIN:
+                    subprocess.run(["taskkill", "/PID", str(rt.pid), "/T", "/F"], capture_output=True, timeout=15)
+                else:
+                    os.killpg(os.getpgid(rt.pid), signal.SIGKILL)
             except Exception:
                 try:
                     rt.proc.kill()
@@ -342,8 +379,17 @@ def take_shot(tool_id: str) -> str | None:
         name = f"{tool_id}_{time.strftime('%Y%m%d-%H%M%S')}.jpg"
         tmp = SHOTS_DIR / (name + ".png")
         tmp.write_bytes(r.stdout)
-        subprocess.run(["/usr/bin/sips", "-Z", "1000", "-s", "format", "jpeg", "-s", "formatOptions", "80",
-                        str(tmp), "--out", str(SHOTS_DIR / name)], capture_output=True, timeout=30)
+        if sys.platform == "darwin":
+            subprocess.run(["/usr/bin/sips", "-Z", "1000", "-s", "format", "jpeg", "-s", "formatOptions", "80",
+                            str(tmp), "--out", str(SHOTS_DIR / name)], capture_output=True, timeout=30)
+        else:       # 11-23：没有 sips，用 Qt 缩到长边 1000、存成 JPG（质量 80）
+            from PySide6.QtCore import Qt
+            from PySide6.QtGui import QImage
+            img = QImage(str(tmp))
+            if not img.isNull():
+                if max(img.width(), img.height()) > 1000:
+                    img = img.scaled(1000, 1000, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+                img.save(str(SHOTS_DIR / name), "JPG", 80)
         _unlink(tmp)
         return name if (SHOTS_DIR / name).exists() else None
     except Exception:
@@ -351,6 +397,8 @@ def take_shot(tool_id: str) -> str | None:
 
 
 def _pkill(pattern: str):
+    if IS_WIN:          # 11-23：歌单里没有用 kill_patterns 的歌，Windows 上先不做
+        return
     try:
         subprocess.run(["pkill", "-x", pattern], capture_output=True)
         subprocess.run(["pkill", "-f", pattern], capture_output=True)

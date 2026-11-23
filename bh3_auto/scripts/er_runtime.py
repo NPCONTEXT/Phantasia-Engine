@@ -6,7 +6,7 @@ from __future__ import annotations
 import concurrent.futures as futures
 from dataclasses import dataclass, field
 from pathlib import Path
-import json, math, os, re, subprocess, tempfile, time, fcntl
+import json, math, os, re, subprocess, tempfile, time
 import cv2
 import numpy as np
 from lib.adb import Adb
@@ -14,6 +14,7 @@ from lib.vision import imdecode, gray, match_template
 from lib.frame_stream import FrameStream
 from lib.maatouch import MaaTouch
 from lib.door_model import DoorModel
+from lib.pe_platform import lock_nb, ocr_engine, ocr_lines  # 11-23 跨平台
 from scripts import er_role
 
 PROJECT = Path(__file__).resolve().parent.parent
@@ -35,12 +36,16 @@ def ocr(png: bytes, timeout=8) -> list[dict]:
         f.write(png)
         path = f.name
     try:
-        p = subprocess.run([str(PROJECT / 'ocr/ocr'), path], capture_output=True,
-                           text=True, timeout=timeout)
-        if p.returncode:
-            raise RunStopped(f'OCR失败({p.returncode}): {p.stderr[-200:]}')
+        if ocr_engine() == 'vision':
+            p = subprocess.run([str(PROJECT / 'ocr/ocr'), path], capture_output=True,
+                               text=True, timeout=timeout)
+            if p.returncode:
+                raise RunStopped(f'OCR失败({p.returncode}): {p.stderr[-200:]}')
+            out = p.stdout
+        else:                          # 11-23：Windows 用 RapidOCR，输出格式一样
+            out = ocr_lines(path, timeout=timeout)
         items = []
-        for line in p.stdout.splitlines():
+        for line in out.splitlines():
             if line.lstrip().startswith('{'):
                 try:
                     item = json.loads(line)
@@ -267,6 +272,8 @@ class Controller:
         self.pending_until=0
         self.observations=0
         self.previous_state=None
+        # 11-24：读、勾周常页增益那一段打开（er_entry.Entry.set_buffs），_read 改用 adb 整屏截图、不读录屏帧
+        self.menu_screencap=False
         self.stream=None;self.model=None;self.device_lock=None
         self.touch=None;self.holding=None   # 多指（MaaTouch）和正按住的点，见 hold()
         self.stick=None                      # 11-12 手指 2 推着摇杆的终点（边打边绕圈），见 stick_hold()
@@ -276,7 +283,7 @@ class Controller:
         if getattr(self.adb,'serial',None):
             name=re.sub(r'[^A-Za-z0-9_-]','_',self.adb.serial)
             self.device_lock=open(Path(tempfile.gettempdir())/f'bh3-elysium-{name}.lock','a+')
-            try:fcntl.flock(self.device_lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+            try:lock_nb(self.device_lock)
             except BlockingIOError:
                 self.device_lock.close()
                 self.executor.shutdown(wait=False)
@@ -303,7 +310,7 @@ class Controller:
             return seconds
         def read_ocr(data):return ocr(data,timeout=min(8,remaining()))
         remaining()
-        if self.stream:
+        if self.stream and not self.menu_screencap:
             try:
                 sequence,captured,im=self.stream.read(after=self.last_input+.18,sequence=self.stream_sequence,timeout=min(.45,remaining()))
                 remaining()

@@ -341,6 +341,27 @@
    "env": "虚数·虚数",
    "down_s": null,
    "log": "edge_try_1121-000841"
+  },
+  {
+   "time": "11-23 23:35",
+   "zone": "左",
+   "res": "win",
+   "full": true,
+   "game_time": "01:33",
+   "score": 6000,
+   "layer": {
+    "当前积分": "• 6000",
+    "战斗时长": "01:26"
+   },
+   "hud_gone_s": 132.8,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "惧冰·冰霜",
+   "down_s": null,
+   "log": "edge_try_1123-233241"
   }
  ],
  "best_row": 1,

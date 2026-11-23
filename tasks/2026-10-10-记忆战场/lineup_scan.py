@@ -5,9 +5,11 @@ import json, subprocess, sys, time
 from pathlib import Path
 import cv2, numpy as np
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE.parent.parent / "bh3_auto"))
+from lib.pe_platform import adb_path, ocr_lines, tmp_dir  # noqa: E402  11-23 跨平台（Mac 上照旧：Homebrew 的 adb、/tmp、Vision 识字）
 OCR = HERE.parent.parent / "bh3_auto/ocr/ocr"
 import os  # noqa: E402  11-17 无线调试：用幻想引擎经 ANDROID_SERIAL 指定的设备；单独运行时才用下面这个序列号
-ADB = ["/opt/homebrew/bin/adb", "-s", os.environ.get("ANDROID_SERIAL") or "YOUR_DEVICE_SERIAL"]
+ADB = [adb_path(), "-s", os.environ.get("ANDROID_SERIAL") or "YOUR_DEVICE_SERIAL"]
 PX = (500, 676, 852, 1054)          # 3 女武神 + 人偶 头像中心 x（2400 基准）
 
 def grab():
@@ -15,8 +17,8 @@ def grab():
     return png, cv2.imdecode(np.frombuffer(png, np.uint8), cv2.IMREAD_COLOR)
 
 def ocr(png):
-    p = Path("/tmp/ma_scan.png"); p.write_bytes(png); out = []
-    for line in subprocess.run([str(OCR), str(p)], capture_output=True, text=True, timeout=30).stdout.splitlines():
+    p = tmp_dir() / "ma_scan.png"; p.write_bytes(png); out = []
+    for line in ocr_lines(p, timeout=30).splitlines():
         try:
             d = json.loads(line)
         except json.JSONDecodeError:

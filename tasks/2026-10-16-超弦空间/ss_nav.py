@@ -30,11 +30,14 @@ except ImportError:
             return False
 
 HERE = Path(__file__).resolve().parent
+import sys  # noqa: E402
+sys.path.insert(0, str(HERE.parent.parent / "bh3_auto"))
+from lib.pe_platform import adb_path, ocr_lines, tmp_dir  # noqa: E402  11-23 跨平台（Mac 上照旧：Homebrew 的 adb、/tmp、Vision 识字）
 OCR = HERE.parent.parent / "bh3_auto/ocr/ocr"
 import os  # noqa: E402  11-17 无线调试：用幻想引擎经 ANDROID_SERIAL 指定的设备；单独运行时才用下面这个序列号
-ADB = ["/opt/homebrew/bin/adb", "-s", os.environ.get("ANDROID_SERIAL") or "YOUR_DEVICE_SERIAL"]
-PNG = Path("/tmp/ss_nav.png")
-CROP = Path("/tmp/ss_crop.png")
+ADB = [adb_path(), "-s", os.environ.get("ANDROID_SERIAL") or "YOUR_DEVICE_SERIAL"]
+PNG = tmp_dir() / "ss_nav.png"
+CROP = tmp_dir() / "ss_crop.png"
 
 # 关卡页左边四个节点（10-16：左 = 开局唯一能打的；上 / 右 / 下 带锁；作者：上左右同一环境、下单独一个）
 NODES = {"左": (230, 796), "上": (464, 560), "右": (700, 800), "下": (464, 1034)}
@@ -67,7 +70,7 @@ def parse(out: str):
 
 
 def ocr_path(p: Path):
-    return parse(subprocess.run([str(OCR), str(p)], capture_output=True, text=True, timeout=30).stdout)
+    return parse(ocr_lines(p, timeout=30))
 
 
 def grab():

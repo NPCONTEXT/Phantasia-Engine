@@ -9,28 +9,58 @@ RES_BASE = "2400x1504"    # 本机基准分辨率（设备 2400x1504）
 RES_NATIVE = "native"
 RES_NONE = "none"  # 不切换分辨率(用于无需手机的测试工具)
 
-# 从 .app 启动时 PATH 里没有 homebrew，这里把常见位置都找一遍
-_ADB_CANDIDATES = (
-    "/opt/homebrew/bin/adb",
-    "/usr/local/bin/adb",
-    str(Path.home() / "Library/Android/sdk/platform-tools/adb"),
-)
-EXTRA_PATH = ("/opt/homebrew/bin", "/usr/local/bin")
+IS_WIN = os.name == "nt"
+# 从 .app 启动时 PATH 里没有 homebrew，这里把常见位置都找一遍（11-23 加 Windows 的）
+if IS_WIN:
+    _ADB_CANDIDATES = (
+        os.path.join(os.environ.get("LOCALAPPDATA", ""), "Android", "Sdk", "platform-tools", "adb.exe"),
+        r"C:\platform-tools\adb.exe",
+        r"C:\Android\platform-tools\adb.exe",
+    )
+    EXTRA_PATH = ()
+else:
+    _ADB_CANDIDATES = (
+        "/opt/homebrew/bin/adb",
+        "/usr/local/bin/adb",
+        str(Path.home() / "Library/Android/sdk/platform-tools/adb"),
+    )
+    EXTRA_PATH = ("/opt/homebrew/bin", "/usr/local/bin")
+
+
+def _usable(p) -> bool:
+    return bool(p) and os.path.isfile(p) and (IS_WIN or os.access(p, os.X_OK))
+
+
+def configured_adb() -> str | None:
+    """11-23：用户指定的 adb——环境变量 PE_ADB，或 tools.json 里 app.adb（写绝对路径）。
+    应用宝、模拟器这类程序自带一个版本不同的 adb，两个版本会抢同一个 adb 服务、互相关掉；
+    这里指到它自带的那个，幻想引擎和各脚本就跟它共用一个版本。指定了但文件不在，当没指定。"""
+    p = os.environ.get("PE_ADB")
+    if not p:
+        try:
+            from core import registry
+            p = str((registry.load().get("app") or {}).get("adb") or "")
+        except Exception:
+            p = ""
+    p = os.path.expanduser(p) if p else p
+    return p if _usable(p) else None
 
 
 def adb_bin() -> str:
+    chosen = configured_adb()
+    if chosen:
+        return chosen
     found = shutil.which("adb")
     if found:
         return found
     for p in _ADB_CANDIDATES:
-        if os.path.isfile(p) and os.access(p, os.X_OK):
+        if _usable(p):
             return p
     return _ADB_CANDIDATES[0]
 
 
 def adb_found() -> bool:
-    p = adb_bin()
-    return os.path.isfile(p) and os.access(p, os.X_OK)
+    return _usable(adb_bin())
 
 
 def child_env() -> dict:
@@ -41,6 +71,10 @@ def child_env() -> dict:
     have = cur.split(os.pathsep)
     e["PATH"] = os.pathsep.join([p for p in dict.fromkeys(parts) if p not in have] + [cur])
     e.setdefault("PYTHONUNBUFFERED", "1")
+    if IS_WIN:      # 11-24：引擎按 UTF-8 读脚本输出；Windows 上 Python 往管道写默认用系统代码页（GBK / cp1252），会乱码或一打印中文就报错
+        e["PYTHONUTF8"] = "1"
+        e["PYTHONIOENCODING"] = "utf-8"
+    e["PE_ADB"] = adb_bin()       # 11-23：脚本用同一个 adb（lib/pe_platform.adb_path 先认它）
     return e
 
 

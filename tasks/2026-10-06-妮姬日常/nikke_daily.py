@@ -38,13 +38,15 @@ except ImportError:
 
 HERE = Path(__file__).resolve().parent
 AGG = HERE.parent.parent
+sys.path.insert(0, str(AGG / "bh3_auto"))
+from lib.pe_platform import adb_path, notify, ocr_lines, tmp_dir  # noqa: E402  11-23 跨平台（Mac 上照旧：Homebrew 的 adb、/tmp、Vision 识字）
 OCR_BIN = AGG / "bh3_auto/ocr/ocr"
 import os  # noqa: E402  11-17 无线调试：用幻想引擎经 ANDROID_SERIAL 指定的设备；单独运行时才用下面这个序列号
-ADB = ["/opt/homebrew/bin/adb", "-s", os.environ.get("ANDROID_SERIAL") or "YOUR_DEVICE_SERIAL"]
+ADB = [adb_path(), "-s", os.environ.get("ANDROID_SERIAL") or "YOUR_DEVICE_SERIAL"]
 PKG = "com.tencent.nikke"
 RECRUIT_NEXT = (1446, 1248)  # 招募页右侧「»」翻到下一个卡池（10-09 实测，共 4 个：新角色 / 上期特殊 / 普通 / 社交点数）
 BASE_W, BASE_H = 1504, 2400
-TMP = Path("/tmp/nikke")
+TMP = tmp_dir("nikke")
 TMP.mkdir(exist_ok=True)
 
 # 这些字所在的按钮绝不点（花珠宝 / 付费 / 用掉活动道具）
@@ -69,14 +71,8 @@ def up(t: str) -> str:
 
 
 def mac_notify(title: str, body: str) -> None:
-    """弹一条 macOS 系统通知（照幻想引擎 ui/device.py 的写法，失败就算了）。"""
-    def esc(x: str) -> str:
-        return x.replace("\\", "\\\\").replace('"', '\\"').replace("\n", " ")
-    try:
-        subprocess.run(["/usr/bin/osascript", "-e", f'display notification "{esc(body)}" with title "{esc(title)}"'],
-                       capture_output=True, timeout=10)
-    except Exception:
-        pass
+    """弹一条系统通知（Mac 用 osascript；别的系统先只打一行日志，见 lib/pe_platform.notify），失败就算了。"""
+    notify(title, body.replace("\n", " "))
 
 
 def has_ascii(s: str) -> bool:
@@ -112,7 +108,7 @@ class Bot:
     def ocr_img(self, img) -> list[tuple[str, int, int]]:
         p = TMP / "cur.jpg"
         cv2.imwrite(str(p), img, [cv2.IMWRITE_JPEG_QUALITY, 92])
-        out = subprocess.run([str(OCR_BIN), str(p)], capture_output=True, text=True, timeout=30).stdout
+        out = ocr_lines(p, timeout=30)
         res = []
         for line in out.splitlines():
             try:
@@ -1493,30 +1489,44 @@ class Bot:
         return "fail"
 
     # ---------- 11 招募 ----------
+    RECRUIT_FREE = (100, 1950, 560, 2050)   # 卡池最左按钮上「每日免费1次」所在的一块（一行字 (304,1984)、两行字 (320,1998) 都在里面）
+
     def step_recruit(self) -> None:
         if not self.open((1226, 2290), ("招募1名", "招募队员"), timeout=10):
             self.note = "没进招募页"
             return
         # 10-09：新角色卡池排到第一页（只有「招募1名 ×300 / 10名 ×3000」，花珠宝），「每日免费1次」在上一期特殊招募
         # 卡池的最左按钮上；以前见字就点写死的 (317,1935)，在新卡池抽了一次。现在按字找、翻页找、点字本身，点前再核一次位置。
-        pos = None
+        # 11-23：几个卡池可能各有一次「每日免费」，以前抽到第一个就停（推断 11-20 到 11-22 复刻卡池那次没抽）。
+        # 作者定每个卡池的都抽：逐页看，见到就抽；抽完回到这页、核对「每日免费」没了再翻下一页。
+        # 位置在变、没生效、抽完没回到卡池页都整步停，不再翻页（免得在别的页面上点右箭头、在用过免费的位置上再点一下花券）。
+        pulled = []
         for i in range(5):
             self.ocr()
-            pos = self.find("每日免费", region=(100, 1950, 560, 2050))
-            if pos or i == 4:
-                break
-            self.tap(*RECRUIT_NEXT, wait=2.5)  # 右箭头翻下一个卡池（只翻页）
-        if not pos:
+            pos = self.find("每日免费", region=self.RECRUIT_FREE)
+            if pos:
+                why = self._recruit_free_here(pos)
+                if why:
+                    self.note = f"免费招募抽了 {len(pulled)} 次，第 {i + 1} 页{why}" if pulled else f"免费招募{why}"
+                    return
+                pulled.append(i + 1)
+            if i < 4:
+                self.tap(*RECRUIT_NEXT, wait=2.5)  # 右箭头翻下一个卡池（只翻页；翻到底再按一下没事，10-29 到 11-09 翻遍没免费时都这样走过）
+        if pulled:
+            log(f"  免费招募抽了 {len(pulled)} 次（第 {'、'.join(map(str, pulled))} 页）")
+        else:
             log("  翻遍卡池没看到「每日免费1次」，今天不抽")
-            return
+
+    def _recruit_free_here(self, pos):
+        """在当前卡池抽一次「每日免费」：点前再核一次位置、点字本身；抽完要回到这页、「每日免费」没了。
+        成了返回 None，不成返回接在「免费招募」后面的原因。"""
         time.sleep(1)
         self.ocr()
-        again = self.find("每日免费", region=(100, 1950, 560, 2050))
+        again = self.find("每日免费", region=self.RECRUIT_FREE)
         if not again or abs(again[0] - pos[0]) > 40 or abs(again[1] - pos[1]) > 40:
             self.snap("recruit_moved")
             log("  「每日免费」位置变了，不抽（免得点到花珠宝的按钮）")
-            self.note = "免费招募没抽：页面在变"
-            return
+            return "没抽：页面在变"
         log(f"  免费招募 @{again}")
         self.tap(*again, wait=4)
         # 动画：点 SKIP / 跳过，再关结果
@@ -1538,9 +1548,14 @@ class Bot:
             else:
                 self.tap(752, 1200, wait=2)   # 动画中点屏幕加速
         self.ocr()
-        if self.find("每日免费", region=(100, 1950, 560, 2050)):
+        if self.find("每日免费", region=self.RECRUIT_FREE):
             self.snap("recruit_free_left")
-            self.note = "免费招募没生效（「每日免费」还在）"
+            return "没生效（「每日免费」还在）"
+        if not self.find("招募1名", region=(100, 1850, 560, 2050)):
+            self.snap("recruit_not_back")
+            log("  抽完没回到卡池页，后面的卡池不看了")
+            return "抽完没回到卡池页"
+        return None
 
     # ---------- 12 普通商店 ----------
     def to_shop(self) -> bool:
@@ -1583,15 +1598,19 @@ class Bot:
         crop = self.img[int((y - 38) * sy):int((y + 37) * sy), int((x - 83) * sx):int((x + 317) * sx)]
         f = TMP / "cost.png"  # 存 PNG：JPEG 会把这个小数字压糊，读不出来
         cv2.imwrite(str(f), crop)
-        out = subprocess.run([str(OCR_BIN), str(f)], capture_output=True, text=True, timeout=30).stdout
+        out = ocr_lines(f, timeout=30)
+        # 11-24：取最右边那个纯数字。数字在钻石图标右边；RapidOCR（Windows）会把图标也读成数字（实测「74」，
+        # 置信度 0.52）排在前面，取第一个就会拿错——要是图标被读成 0、真实费用不是 0，还会当成免费去点确认。
+        best = None
         for line in out.splitlines():
             try:
-                t = json.loads(line)["text"].strip()
+                d = json.loads(line)
+                t = d["text"].strip()
             except (json.JSONDecodeError, KeyError):
                 continue
-            if re.fullmatch(r"\d+", t):
-                return int(t)
-        return None
+            if re.fullmatch(r"\d+", t) and (best is None or d.get("x", 0) > best[0]):
+                best = (d.get("x", 0), int(t))
+        return best[1] if best else None
 
     REFRESH_JITTER = ((0, 0), (-12, -6), (12, 6), (-6, 12), (6, -12), (0, 0))  # 刷新图标 (775,1092) 周围，都在图标内
 

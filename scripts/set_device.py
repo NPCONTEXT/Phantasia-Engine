@@ -15,7 +15,24 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 MARK = ROOT / '.device_serial'
 PLACEHOLDER = 'YOUR_DEVICE_SERIAL'
-ADB = '/opt/homebrew/bin/adb'
+import json  # noqa: E402
+import os  # noqa: E402
+# 11-24 跨平台（审查后改）：和幻想引擎用同一套找法——tools.json 里 app.adb 指定的 → 环境变量 PE_ADB → PATH → 各平台常见位置
+#（Windows 上找 %LOCALAPPDATA%\Android\Sdk\platform-tools\adb.exe 等，见 bh3_auto/lib/pe_platform.py）
+_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(_ROOT / 'bh3_auto'))
+from lib.pe_platform import adb_path  # noqa: E402
+
+
+def _configured_adb():
+    try:
+        p = (json.loads((_ROOT / 'tools.json').read_text(encoding='utf-8')).get('app') or {}).get('adb') or ''
+    except (OSError, ValueError):
+        p = ''
+    return p if p and os.path.isfile(os.path.expanduser(p)) else None
+
+
+ADB = _configured_adb() or adb_path()
 
 
 def online():

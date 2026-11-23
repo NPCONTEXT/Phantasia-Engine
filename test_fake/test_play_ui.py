@@ -41,7 +41,7 @@ def tools(tmp: Path) -> list[dict]:
     wd.mkdir(parents=True, exist_ok=True)
     other = {"id": "other", "name": "别的专辑 · 一首", "env": "none", "workdir": str(wd), "need_device": False,
              "album": "别的专辑", "tasks": ["一句"], "report_steps": True,
-             "command": ["/bin/sh", "-c", "echo '== 一句'; echo '完成：一句=ok'"]}
+             "command": [sys.executable, "-c", "print('== 一句', flush=True); print('完成：一句=ok', flush=True)"]}
     return [dict(base, id="fa", name="测试 · A"), dict(base, id="fb", name="测试 · B"),
             dict(base, id="fc", name="测试 · C"), other]
 

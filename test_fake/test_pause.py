@@ -44,7 +44,7 @@ def tools(tmp: Path) -> list[dict]:
     wd.mkdir(parents=True, exist_ok=True)
     slow = {"id": "slow_sh", "name": "没接暂停的慢工具", "env": "none", "workdir": str(wd), "need_device": False,
             "album": "测试", "tasks": ["第一句", "第二句"], "report_steps": True,
-            "command": ["/bin/sh", "-c", "echo '== 第一句'; sleep 1.5; echo '== 第二句'; sleep 0.3; echo '完成：第一句=ok，第二句=ok'"]}
+            "command": [sys.executable, "-c", "import time; print('== 第一句', flush=True); time.sleep(1.5); print('== 第二句', flush=True); time.sleep(0.3); print('完成：第一句=ok，第二句=ok', flush=True)"]}
     return [dict(base, id="fake_pause", name="假暂停工具 A"), dict(base, id="fake_pause2", name="假暂停工具 B"), slow]
 
 
@@ -75,6 +75,8 @@ def bubble_text(win) -> str:
 def p7_p8_p9(env, c, tmp: Path):
     clean = {k: v for k, v in os.environ.items() if k != "PLAY_CTL"}
     clean["PYTHONPATH"] = str(LIB)
+    if os.name == "nt":      # 11-24：和引擎给脚本的环境一样（core/env.py child_env），输出用 UTF-8
+        clean.update(PYTHONUTF8="1", PYTHONIOENCODING="utf-8")
     c.start("P7 模块单独跑（没有 PLAY_CTL）")
     code = ("import sys, time, play_ctl as x\n"
             "assert not x.ON and time.time is x._real_time and time.monotonic is x._real_mono\n"
@@ -83,8 +85,8 @@ def p7_p8_p9(env, c, tmp: Path):
             "@x.battle('装饰器')\ndef f():\n    return 1\n"
             "assert f() == 1\n"
             "print('ok', sys.version_info[:2])")
-    r = subprocess.run([PY39, "-c", code], env=clean, capture_output=True, text=True, timeout=30)
-    c.ok(r.returncode == 0 and r.stdout.startswith("ok (3, 9)"), f"返回 {r.returncode}：{r.stdout.strip()} {r.stderr.strip()[-300:]}")
+    r = subprocess.run([PY39, "-c", code], env=clean, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=30)
+    c.ok(r.returncode == 0 and r.stdout.startswith("ok (3, 12)" if os.name == "nt" else "ok (3, 9)"), f"返回 {r.returncode}：{r.stdout.strip()} {r.stderr.strip()[-300:]}")
 
     c.start("P8 子进程不把「战斗中」盖掉")
     ctl = tmp / "ctl_p8"
@@ -99,7 +101,7 @@ def p7_p8_p9(env, c, tmp: Path):
             "    s = st()\n"
             "    print(r.stdout.strip(), s['state'], s['why'])\n"
             "print(st()['state'])")
-    r = subprocess.run([PY39, "-c", code], env=dict(clean, PLAY_CTL=str(ctl)), capture_output=True, text=True, timeout=40)
+    r = subprocess.run([PY39, "-c", code], env=dict(clean, PLAY_CTL=str(ctl)), capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=40)
     out = r.stdout.strip().splitlines()
     c.ok(out == ["没停 battle 父进程的战斗", "run"], f"输出：{out} {r.stderr.strip()[-300:]}")
 
@@ -116,7 +118,7 @@ def p7_p8_p9(env, c, tmp: Path):
             "mark(None)\nprint(st()['state'])\n"
             "threading.Timer(0.5, lambda: os.remove(os.path.join(os.environ['PLAY_CTL'], 'pause'))).start()\n"
             "print('能停：', pause_point())\n")
-    r = subprocess.run([PY39, "-c", code], env=dict(clean, PLAY_CTL=str(ctl)), capture_output=True, text=True, timeout=30)
+    r = subprocess.run([PY39, "-c", code], env=dict(clean, PLAY_CTL=str(ctl)), capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=30)
     out = [ln for ln in r.stdout.strip().splitlines() if "[引擎]" not in ln]
     c.ok(out == ["battle 正在打乐土 乐土正在战斗或找门，到选刻印页时才能停", "标了不能停： False", "run", "能停： True"],
          f"输出：{out} {r.stderr.strip()[-300:]}")

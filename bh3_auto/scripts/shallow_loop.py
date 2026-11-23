@@ -13,6 +13,7 @@ import sys, time, re, json, subprocess, tempfile, os
 sys.path.insert(0, str(__import__('pathlib').Path(__file__).resolve().parent.parent))
 
 from lib.adb import Adb
+from lib.pe_platform import ocr_lines  # 11-23 跨平台
 from lib.vision import imdecode
 from lib.shallow_detect import scan, is_locked
 from scripts.shallow_battle import fight, _in_battle, battle_mode
@@ -39,7 +40,7 @@ def ocr_text(png: bytes):
     with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as f:
         f.write(png); p = f.name
     try:
-        out = subprocess.run([str(PROJECT / 'ocr/ocr'), p], capture_output=True, text=True, timeout=25).stdout
+        out = ocr_lines(p, timeout=25)
     finally:
         os.unlink(p)
     items = []

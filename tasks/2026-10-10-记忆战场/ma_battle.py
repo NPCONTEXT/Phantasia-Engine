@@ -20,6 +20,7 @@ ROOT = HERE.parent.parent
 sys.path.insert(0, str(ROOT / "bh3_auto"))
 from lib.adb import Adb                      # noqa: E402
 from lib.frame_stream import FrameStream     # noqa: E402
+from lib.pe_platform import ocr_lines, tmp_dir  # noqa: E402  11-23 跨平台（Mac 上照旧：Homebrew 的 adb、/tmp、Vision 识字）
 from touch import Touch                      # noqa: E402
 import ma_nav                                # noqa: E402
 
@@ -143,10 +144,10 @@ def boss_hp(img):
 
 
 def ocr_img(img):
-    p = Path("/tmp/ma_battle_ocr.png")
+    p = tmp_dir() / "ma_battle_ocr.png"
     cv2.imwrite(str(p), img)
     out = []
-    for line in subprocess.run([str(OCR), str(p)], capture_output=True, text=True, timeout=30).stdout.splitlines():
+    for line in ocr_lines(p, timeout=30).splitlines():
         try:
             d = json.loads(line)
         except json.JSONDecodeError:

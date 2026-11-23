@@ -3,18 +3,20 @@
 import json, subprocess, sys, time
 from pathlib import Path
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE.parent.parent / "bh3_auto"))
+from lib.pe_platform import adb_path, ocr_lines, tmp_dir  # noqa: E402  11-23 跨平台（Mac 上照旧：Homebrew 的 adb、/tmp、Vision 识字）
 OCR = HERE.parent.parent / "bh3_auto/ocr/ocr"
 import os  # noqa: E402  11-17 无线调试：用幻想引擎经 ANDROID_SERIAL 指定的设备；单独运行时才用下面这个序列号
-ADB = ["/opt/homebrew/bin/adb", "-s", os.environ.get("ANDROID_SERIAL") or "YOUR_DEVICE_SERIAL"]
+ADB = [adb_path(), "-s", os.environ.get("ANDROID_SERIAL") or "YOUR_DEVICE_SERIAL"]
 BOSS_Y = (300, 500, 690)
 
 def tap(x, y, w=2.5):
     subprocess.run(ADB + ["shell", f"input tap {x} {y}"], timeout=10); time.sleep(w)
 
 def ocr():
-    p = Path("/tmp/ma_nav.png"); p.write_bytes(subprocess.run(ADB + ["exec-out", "screencap", "-p"], capture_output=True, timeout=20).stdout)
+    p = tmp_dir() / "ma_nav.png"; p.write_bytes(subprocess.run(ADB + ["exec-out", "screencap", "-p"], capture_output=True, timeout=20).stdout)
     out = []
-    for line in subprocess.run([str(OCR), str(p)], capture_output=True, text=True, timeout=30).stdout.splitlines():
+    for line in ocr_lines(p, timeout=30).splitlines():
         try:
             d = json.loads(line)
         except json.JSONDecodeError:

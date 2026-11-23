@@ -73,9 +73,11 @@ def buff_rows(items, png):
     im = _png_2400(png)
     costs = []
     for i in items:
-        m = re.fullmatch(r'\s*[$¥＄]?\s*(\d{1,2})\s*', i.get('text', ''))
+        # 11-24：点数前的闪电图标多数帧读成「$」，有时读成「4」（「$15」读成「415」整行丢了，勾完核对不上停机）→ 「4」也当前缀；
+        # 点数只有 5 的倍数（0/5/10/15…），读出别的数不认
+        m = re.fullmatch(r'\s*[$¥＄4]?\s*(\d{1,2})\s*', i.get('text', ''))
         cy = i['y'] + i['h'] / 2
-        if m and i['x'] < 330 and LIST_TOP < cy < LIST_BOTTOM:
+        if m and int(m[1]) % 5 == 0 and i['x'] < 330 and LIST_TOP < cy < LIST_BOTTOM:
             costs.append((cy, int(m[1])))
     rows = []
     for cy, cost in sorted(costs):
@@ -315,7 +317,10 @@ class Entry:
     def read_buffs(self):
         """从顶上翻到底读一遍增益列表。返回 (行, 点数 (已用, 总数) 或 None, 读全没有)。"""
         rows, pts, complete, steady = {}, None, False, True
-        for f, vis, stable, bottom in self.views():
+        for n, (f, vis, stable, bottom) in enumerate(self.views()):
+            # 11-24：每屏记一行，再读不全时能看出卡在哪（行没认出来 / 没停稳 / 没凑出连着两屏一样）
+            self.c.log('buffs_view', n=n + 1, keys=[r['key'] for r in vis], costs=[r['cost'] for r in vis],
+                       stable=stable, bottom=bottom)
             steady = steady and stable
             pts = pts or buff_points(f.items)
             for r in vis:
@@ -327,6 +332,17 @@ class Entry:
         return rows, pts, complete and steady
 
     def set_buffs(self, frame):
+        """读、勾增益这一段让控制器改用 adb 整屏截图（c.menu_screencap），出这一段（含停机）一定切回录屏。
+        11-24：新一周增益全空（0/30），录屏帧上两遍各翻 5 屏都没读全、停在周常页；10-20 两次也这样，
+        当时 adb 整屏截图一遍就读全。菜单页画面不动，慢一点（每帧多 1–2 秒）没关系。"""
+        c = self.c
+        c.menu_screencap = True
+        try:
+            return self._set_buffs(frame)
+        finally:
+            c.menu_screencap = False
+
+    def _set_buffs(self, frame):
         """按关键词补勾增益：确认读到列表底部、每屏都停稳才动；只在剩余点数内补勾，绝不取消已勾的。
         每点一下都核对只有目标那一行变了；对不上就停在周常页，不开局。
         没读全就从头再读一遍（10-20 01:25 偶发没读全，19:42 侦察同一张列表 3 屏就读全了）；

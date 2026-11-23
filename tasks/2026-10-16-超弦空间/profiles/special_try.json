@@ -268,6 +268,27 @@
    "env": "闪耀·烁星",
    "down_s": null,
    "log": "special_try_1121-001623"
+  },
+  {
+   "time": "11-23 23:45",
+   "zone": "下",
+   "res": "win",
+   "full": true,
+   "game_time": "02:03",
+   "score": 6000,
+   "layer": {
+    "当前积分": "6000",
+    "战斗时长": "01:59"
+   },
+   "hud_gone_s": 186.5,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "量子·量子",
+   "down_s": null,
+   "log": "special_try_1123-234221"
   }
  ],
  "best_row": 1,

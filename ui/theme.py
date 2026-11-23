@@ -1,6 +1,7 @@
 """配色 / 字体 / 全局样式（版式取自设计稿 A3「贴纸手账 · 歌单版」；11-14 幻想引擎版本二：配色跟着雨澜走，
 银白底、冰蓝强调、金色只留给名牌和待验收。常量名沿用旧的：PINK 一族现在是冰蓝，BLUSH 是淡金）"""
 import subprocess
+import sys
 
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor, QFont, QFontDatabase, QPalette
@@ -35,6 +36,9 @@ def _init_fonts():
     _fam_mono = [f for f in ("SF Mono", "Menlo") if f in have]
     if "PingFang SC" in have:
         _fam_mono.append("PingFang SC")
+    if sys.platform == "win32":     # 11-23：Windows 上用系统自带的雅黑、Consolas
+        _fam_ui += [f for f in ("Microsoft YaHei UI", "Microsoft YaHei", "Segoe UI") if f in have]
+        _fam_mono += [f for f in ("Consolas", "Cascadia Mono", "Microsoft YaHei UI") if f in have]
 
 
 def font(px: int, weight: int = 400, mono: bool = False) -> QFont:

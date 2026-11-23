@@ -49,6 +49,14 @@ def tools(tmp: Path) -> list[dict]:
     return [fake, plain, dev, orphan]
 
 
+def pid_alive(pid: int) -> bool:
+    """进程还在不在。11-24：Windows 上没有 ps（GitHub 的机器上那个是 Git 带的 MSYS ps，不认 Windows 进程号）；也不能用 os.kill(pid, 0)，它会直接结束那个进程。"""
+    if os.name == "nt":
+        out = subprocess.run(["tasklist", "/FI", f"PID eq {pid}", "/NH"], capture_output=True, text=True, errors="replace").stdout
+        return re.search(rf"\b{pid}\b", out) is not None
+    return subprocess.run(["ps", "-p", str(pid)], capture_output=True).returncode == 0
+
+
 def r8(env, c):
     """退出后留下 sleep 30 占着管道：改前要等 30 秒才写记录（界面一直「正在播放」），改后几秒内写完、子进程被收掉。"""
     c.start("R8 留下的子进程被哨兵收掉，不卡在正在播放")
@@ -60,7 +68,7 @@ def r8(env, c):
         pid = next((int(m.group(1)) for ln in env.log_lines(rec) for m in [re.search(r"留下子进程 (\d+)", ln)] if m), None)
         if c.ok(pid, "日志里没有子进程号"):
             time.sleep(0.5)
-            alive = subprocess.run(["ps", "-p", str(pid)], capture_output=True).returncode == 0
+            alive = pid_alive(pid)
             c.ok(not alive, f"子进程 {pid} 还活着")
     print(f"  R8 用时 {took:.1f} 秒")
 
@@ -180,7 +188,7 @@ def main() -> int:
     c.ok(not dlg2.recent_row.isVisible(), "没有最近用过时这一行隐藏")
     dlg2.tiles[1].click()
     c.ok(dlg2.chosen == "newone", f"点格子：{dlg2.chosen}")
-    dlg.grab().save("/tmp/phantasia_roles_panel.png")
+    dlg.grab().save(os.path.join(tempfile.gettempdir(), "phantasia_roles_panel.png"))
 
     # ---------------------------------------------------------------- R5
     c.start("R5 普通歌不受影响")
@@ -216,7 +224,7 @@ def main() -> int:
     # ---------------------------------------------------------------- R8
     r8(env, c)
 
-    win.grab().save("/tmp/phantasia_roles_window.png")
+    win.grab().save(os.path.join(tempfile.gettempdir(), "phantasia_roles_window.png"))
     print()
     bad = 0
     for k, v in c.res.items():
@@ -224,7 +232,7 @@ def main() -> int:
         for x in v:
             print("   -", x)
         bad += bool(v)
-    print("截图：/tmp/phantasia_roles_window.png  /tmp/phantasia_roles_panel.png")
+    print("截图：%s  %s" % (os.path.join(tempfile.gettempdir(), "phantasia_roles_window.png"), os.path.join(tempfile.gettempdir(), "phantasia_roles_panel.png")))
     import shutil
     shutil.rmtree(tmp, ignore_errors=True)
     print(f"临时目录已删除：{not tmp.exists()}")

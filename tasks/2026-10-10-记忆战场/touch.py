@@ -4,8 +4,11 @@
 用完 close()，不留后台进程；推上去的文件留在设备上，下次直接用。"""
 import subprocess, threading, time
 from pathlib import Path
+import sys  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "bh3_auto"))
+from lib.pe_platform import adb_path  # noqa: E402  11-23 跨平台（Mac 上照旧：Homebrew 的 adb、/tmp、Vision 识字）
 
-ADB = "/opt/homebrew/bin/adb"
+ADB = adb_path()
 import os  # noqa: E402  11-17 无线调试：用幻想引擎经 ANDROID_SERIAL 指定的设备；单独运行时才用下面这个序列号
 SERIAL = os.environ.get("ANDROID_SERIAL") or "YOUR_DEVICE_SERIAL"
 BASE_W, BASE_H = 2400, 1504

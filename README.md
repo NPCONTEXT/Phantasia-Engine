@@ -48,7 +48,7 @@
 - **账号**：有的步骤要求对应玩法已经解锁；乐土只有符华、愈生佑翎两个角色的档案；记忆战场只打学过的 BOSS（`profiles/` 里有档案的）。
 - **花不花东西**：花付费货币的按钮一律不点。体力、金币这类日常资源会按每首歌说明里写的规则用掉，播放前先看说明。
 - **风险**：用脚本代替手动操作可能违反游戏的用户协议，账号因此受到的处理由你自己承担。本项目和这些游戏的开发商、运营商没有关系。
-- **电脑**：只支持 Apple 芯片的 Mac（识字用的是 macOS 自带的 Vision）。
+- **电脑**：Apple 芯片的 Mac（识字用的是 macOS 自带的 Vision）。Windows 是实验性的，还没在 Windows 实机上跑过，见下面「Windows（实验性）」。
 
 ## 歌单里现在有什么
 
@@ -114,6 +114,29 @@ python3 scripts/set_device.py
 
 第一次打开先看右上角的「环境自检」：按钮是红边，就是有哪一项没过，点开能看到原因。怎么播放、怎么排队、怎么看结果，写在 [docs/使用教程.md](docs/使用教程.md)，界面右上角的「关于」里也能看。
 
+## Windows（实验性）
+
+同一份代码在 Windows 上走另一条路：识字用 RapidOCR（Mac 上是系统自带的 Vision），播放管理用 Python 写的哨兵。**还没在 Windows 实机上跑过**：Mac 上把这条路能走的都离线测过，安装和界面、平台层的离线测试另在 GitHub 的 Windows 机器上跑（见「测试」）。遇到问题欢迎提 issue。
+
+要准备：
+
+- Windows 10 / 11，[Python 3.12](https://www.python.org/downloads/)（装的时候勾上 py launcher；识字用的 RapidOCR 还不支持 3.13）。
+- [Android SDK Platform-Tools](https://developer.android.com/tools/releases/platform-tools)，把 `adb.exe` 所在的目录加进 PATH。
+- ffmpeg（记忆战场、超弦空间、乐土的战斗要用）：
+
+```bat
+winget install Gyan.FFmpeg
+```
+
+安装和打开：在项目目录里双击 `install.bat`，装好后双击 `启动幻想引擎.bat`。引擎开在一个最小化的命令行窗口里，别关它；请用这个启动器打开（停止播放时要靠这个窗口把信号送给脚本，用别的方式打开会直接强制结束）。项目可以放在带中文的路径里。
+
+和 Mac 版不一样的地方：
+
+- **识字**：RapidOCR 认错字的方式和 Vision 不一样，脚本里有些页面是照 Vision 的读法调的，个别页面可能认不出、要补写法。
+- **模拟器**：脚本的坐标按 16:10 写，模拟器分辨率要设成 2400×1504 或 1920×1200 这类 16:10 的；16:9 的对不上。
+- **模拟器、应用宝这类程序自带一个 adb**：它和你装的 adb 版本不同时，两个会抢同一个 adb 服务、互相把对方关掉，设备就掉线。在 `tools.json` 的 `app` 里加一行 `"adb": "模拟器自带的 adb.exe 的完整路径"`，幻想引擎和各脚本就跟它共用一个。
+- **还没有的**：系统通知（界面里的气泡和播放记录照常）、手机提醒（定时任务只写了 Mac 的）、「进程树」那个排查小窗；识字没有超时（Mac 上的识字程序 30 秒不出结果会放弃，RapidOCR 在本进程里跑，万一卡住只能点停止）。
+
 ## 手机提醒（可选）
 
 该做的日常没做完时，往微信推一条「【雨澜】…」的提醒。是一个单独的定时任务，装法见 [tasks/2026-10-19-主动提醒/README.md](tasks/2026-10-19-主动提醒/README.md)。
@@ -147,6 +170,24 @@ python3 scripts/set_device.py
 ```bash
 ( for t in subitems roles startup pause play_ui review_jump persona device_pick; do QT_QPA_PLATFORM=offscreen venv-qt.nosync/bin/python test_fake/test_$t.py || exit 1; done )
 ```
+
+Windows 上在项目根目录跑：
+
+```bat
+for %t in (subitems roles startup pause play_ui review_jump persona device_pick) do venv-qt.nosync\Scripts\python.exe test_fake\test_%t.py
+```
+
+平台层（找 adb 和 ffmpeg、临时目录、识字、Python 版哨兵）另有两份测试，Mac 上这样跑（Windows 把 `bin/python` 换成 `Scripts\python.exe`）：
+
+```bash
+venv-qt.nosync/bin/python -m unittest test_fake/test_platform.py
+```
+
+```bash
+( cd bh3_auto && .venv/bin/python -m unittest tests/test_pe_platform.py )
+```
+
+每次推送，[GitHub Actions](.github/workflows/windows-offline.yml) 会在 Windows 机器上用 `install.bat` 装一遍，再把上面这些测试跑一遍。
 
 各游戏脚本自己的测试要用带账号信息的整屏截图当素材，没有放进仓库。
 

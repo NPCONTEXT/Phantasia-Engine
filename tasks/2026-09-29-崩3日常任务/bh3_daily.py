@@ -45,10 +45,11 @@ HERE = Path(__file__).resolve().parent
 AGG = HERE.parent.parent
 sys.path.insert(0, str(AGG / "bh3_auto"))
 from lib.adb import Adb, BASE_W, BASE_H  # noqa: E402
+from lib.pe_platform import ocr_lines, tmp_dir  # noqa: E402  11-23 跨平台（Mac 上照旧：Homebrew 的 adb、/tmp、Vision 识字）
 
 OCR_BIN = AGG / "bh3_auto/ocr/ocr"
 PKG = "com.miHoYo.enterprise.NGHSoD"
-TMP = Path("/tmp/bh3daily")
+TMP = tmp_dir("bh3daily")
 TMP.mkdir(exist_ok=True)
 
 
@@ -101,7 +102,7 @@ class Bot:
         self.h, self.w = self.img.shape[:2]
         p = TMP / "cur.jpg"
         cv2.imwrite(str(p), self.img, [cv2.IMWRITE_JPEG_QUALITY, 92])
-        out = subprocess.run([str(OCR_BIN), str(p)], capture_output=True, text=True, timeout=30).stdout
+        out = ocr_lines(p, timeout=30)
         sx, sy = BASE_W / self.w, BASE_H / self.h
         res = []
         for line in out.splitlines():

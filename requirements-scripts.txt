@@ -1,4 +1,6 @@
-# 脚本环境（bh3_auto/.venv）。作者用的是 macOS 自带的 /usr/bin/python3（3.9）。
+# 脚本环境（bh3_auto/.venv）。作者在 Mac 上用的是 macOS 自带的 /usr/bin/python3（3.9）；Windows 用 Python 3.12。
 numpy==2.0.2
 opencv-python==5.0.0.93
 onnxruntime==1.19.2
+# Windows 上识字用 RapidOCR（Mac 用系统自带的 Vision，不装它）。它要 Python 3.12 及以下。
+rapidocr-onnxruntime==1.4.4; sys_platform == "win32"

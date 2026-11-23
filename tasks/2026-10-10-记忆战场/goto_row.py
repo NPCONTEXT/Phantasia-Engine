@@ -4,11 +4,13 @@ import json, subprocess, sys, time
 from collections import Counter
 from pathlib import Path
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE.parent.parent / "bh3_auto"))
+from lib.pe_platform import adb_path  # noqa: E402  11-23 跨平台（Mac 上照旧：Homebrew 的 adb、/tmp、Vision 识字）
 
 from lineup_scan import ocr, grab, swipe, screen_rows      # 复用
 
 import os  # noqa: E402  11-17 无线调试：用幻想引擎经 ANDROID_SERIAL 指定的设备；单独运行时才用下面这个序列号
-ADB = ["/opt/homebrew/bin/adb", "-s", os.environ.get("ANDROID_SERIAL") or "YOUR_DEVICE_SERIAL"]
+ADB = [adb_path(), "-s", os.environ.get("ANDROID_SERIAL") or "YOUR_DEVICE_SERIAL"]
 row = int(sys.argv[1]); what = sys.argv[2] if len(sys.argv) > 2 else "tut"
 rec = int(sys.argv[3]) if len(sys.argv) > 3 else 0
 

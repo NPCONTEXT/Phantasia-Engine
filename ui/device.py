@@ -1,5 +1,6 @@
 """后台线程里干的三件事: 轮询设备状态 / 监控截图 / 发 macOS 系统通知。界面线程不直接调 adb。"""
 import subprocess
+import sys
 import threading
 
 from PySide6.QtCore import QObject, Qt, Signal
@@ -86,7 +87,10 @@ class MonitorFeed(QObject):
 
 
 def notify(title: str, body: str = "", subtitle: str = "幻想引擎"):
-    """发一条 macOS 系统通知（PySide6 没有原生接口，借 osascript 发；失败就算了）。"""
+    """发一条 macOS 系统通知（PySide6 没有原生接口，借 osascript 发；失败就算了）。
+    11-23：别的系统先不发（界面里的气泡、播放记录照常），以后要发再接 Windows 的通知。"""
+    if sys.platform != "darwin":
+        return
     def esc(s: str) -> str:
         return s.replace("\\", "\\\\").replace('"', '\\"').replace("\n", " ")
 

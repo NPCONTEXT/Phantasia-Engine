@@ -1,0 +1,50 @@
+# Windows 离线测试：不连设备。用 install.bat 装两个运行环境，再跑平台层自测、哨兵和路径测试、界面 8 套（Windows 上走 Python 版哨兵）。
+name: Windows 离线测试
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 45
+    env:
+      QT_QPA_PLATFORM: offscreen
+      QT_QPA_FONTDIR: C:\Windows\Fonts     # 离屏模式下 Qt 不找系统字体，指过去截图里才有字
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 安装（install.bat）
+        shell: cmd
+        run: install.bat
+
+      - name: 两个环境装了什么
+        shell: cmd
+        run: |
+          venv-qt.nosync\Scripts\python.exe -m pip list
+          bh3_auto\.venv\Scripts\python.exe -m pip list
+
+      - name: 平台层自测（bh3_auto/tests/test_pe_platform.py）
+        shell: cmd
+        working-directory: bh3_auto
+        run: .venv\Scripts\python.exe -m unittest tests\test_pe_platform.py -v
+
+      - name: 哨兵和路径（test_fake/test_platform.py）
+        shell: cmd
+        run: venv-qt.nosync\Scripts\python.exe -m unittest test_fake\test_platform.py -v
+
+      - name: 界面 8 套
+        shell: cmd
+        run: |
+          set FAIL=0
+          for %%t in (subitems roles startup pause play_ui review_jump persona device_pick) do (
+            echo == test_%%t
+            venv-qt.nosync\Scripts\python.exe test_fake\test_%%t.py || set FAIL=1
+          )
+          exit /b %FAIL%

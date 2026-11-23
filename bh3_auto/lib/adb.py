@@ -10,15 +10,17 @@ import os
 import subprocess
 import time
 
+from lib.pe_platform import adb_path as _find_adb
+
 # 基础分辨率：所有人工标注坐标都以这个尺寸为基准，运行时按实际截图尺寸等比换算
 BASE_W, BASE_H = 2400, 1504
 
 
 class Adb:
-    def __init__(self, serial: str = "", adb_path: str = "/opt/homebrew/bin/adb"):
+    def __init__(self, serial: str = "", adb_path: str = ""):
         # 11-17 无线调试：没指定就用幻想引擎经 ANDROID_SERIAL 给的设备；单独运行时才用下面这个序列号
         self.serial = serial or os.environ.get("ANDROID_SERIAL") or "YOUR_DEVICE_SERIAL"
-        self.adb = adb_path
+        self.adb = adb_path or _find_adb()      # 11-23：不传就照 lib/pe_platform 找（Mac 上照旧是 Homebrew 那个）
 
     def _run(self, args: list[str], timeout: float = 30) -> bytes:
         cmd = [self.adb, "-s", self.serial] + args

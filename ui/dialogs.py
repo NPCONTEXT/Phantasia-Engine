@@ -239,6 +239,8 @@ class SelfCheckDialog(Dialog):
 # ---------------------------------------------------------------- 进程树
 def proc_tree_text() -> str:
     """只列出幻想引擎自己和它拉起的进程。"""
+    if os.name == "nt":     # 11-23：Windows 没有 ps，这个排查用的小功能先不做
+        return "（Windows 上暂不显示进程树）"
     try:
         out = subprocess.run(["ps", "-axo", "pid=,ppid=,etime=,command="],
                              capture_output=True, text=True, timeout=10).stdout

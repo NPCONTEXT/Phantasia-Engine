@@ -44,12 +44,15 @@ except ImportError:
 
 HERE = Path(__file__).resolve().parent
 OCR_BIN = HERE / "ocr_rev2"
+sys.path.insert(0, str(HERE.parent.parent / "bh3_auto"))
+from lib.pe_platform import adb_path, ocr_lines, tmp_dir  # noqa: E402  11-23 跨平台（Mac 上照旧：Homebrew 的 adb、/tmp、Vision 识字）
 TPL = HERE / "tpl"
 import os  # noqa: E402  11-17 无线调试：用幻想引擎经 ANDROID_SERIAL 指定的设备；单独运行时才用下面这个序列号
-ADB = ["/opt/homebrew/bin/adb", "-s", os.environ.get("ANDROID_SERIAL") or "YOUR_DEVICE_SERIAL"]
+ADB = [adb_path(), "-s", os.environ.get("ANDROID_SERIAL") or "YOUR_DEVICE_SERIAL"]
 PKG = "com.miHoYo.Nap"
 BASE_W, BASE_H = 2400, 1504
-TMP = Path("/tmp/zzz")
+TMP = tmp_dir("zzz")
+CLAIM_BTN_MIN = 3000    # 11-24：7 天签到活动那排亮黄像素超过这个数 = 有没领的「领取」按钮（没领约 11000、领过 0，见 tests/test_signin_20261124.py）
 TMP.mkdir(exist_ok=True)
 
 # 这些字所在的按钮绝不点
@@ -85,6 +88,7 @@ class Bot:
         self.signin_swiped = False      # 签到格子已经往右滑过一次
         self.signin_got = False         # 这次运行点完今天那格后见过「获得」提示（11-23）
         self.signin_miss = 0            # 点了黄格却没出「获得」的次数（11-23）
+        self.signin_btn = 0             # 点 7 天签到活动「领取」按钮的次数（11-24）
         self.tpl = {k: cv2.imread(str(TPL / f"{k}.png")) for k in ("atk", "return", "quick", "city")}
 
     # ---------- 基础 ----------
@@ -109,7 +113,7 @@ class Bot:
     def ocr_img(self, img) -> list[tuple[str, int, int]]:
         p = TMP / "cur.png"
         cv2.imwrite(str(p), img)
-        out = subprocess.run([str(OCR_BIN), str(p)], capture_output=True, text=True, timeout=30).stdout
+        out = ocr_lines(p, timeout=30, binary=OCR_BIN)
         res = []
         for line in out.splitlines():
             try:
@@ -328,9 +332,14 @@ class Bot:
     def signin_popup(self) -> bool:
         """签到弹窗（「惊喜放映企划」等）：一排「NN DAY」卡片，今天那格的角标是黄色、没打勾。
         点今天那格领，领过（没有黄色角标）就点左上返回 (172,80) 关掉。"""
-        days = [(x, y) for t, x, y in self.items if "DAY" in t.upper() and 600 <= y <= 720]
+        # 11-24：RapidOCR（Windows）常把卡片上的「DAY」读成「DA」；Vision 不会单独读出「DA」，Mac 上不变
+        days = [(x, y) for t, x, y in self.items if ("DAY" in t.upper() or t.strip().upper() == "DA") and 600 <= y <= 720]
         if not days:
             return False
+        # 11-24：7 天签到活动那种弹窗，卡片下面一排是「领取×60」/「已领取×60」，只认按钮、不按颜色找格子（见 signin_event_row）
+        row = [(t, x, y) for t, x, y in self.items if "领取" in t and 1030 <= y <= 1110 and 600 <= x <= 2360]
+        if row:
+            return self.signin_event_row(row)
         # 11-23：7 天签到活动「决战于黎明之前」第 7 天的大奖格整张是黄的，今天那格领完后它被当成「今天那格」，
         # 点了 8 下都没反应（每下存一张图，白花 45 秒；颜色稍一变才碰巧停下，不变的话会点到 5 分钟超时）。
         # 黄格点了没出「获得」累计 2 次就不再点：第 2 下留给第一下没点上的情况。
@@ -368,6 +377,45 @@ class Bot:
             self.note = "签到弹窗没认出今天那格，可能没领（截图已存）"
         self.tap(172, 80, wait=3)
         return True
+
+    def signin_event_row(self, row) -> bool:
+        """7 天签到活动弹窗（「决战于黎明之前」）：今天能领的那格下面是亮黄的「领取×60」按钮，领过的变灰、读成「已领取×60」
+        （11-21、11-22、11-24 领之前、11-21 和 11-23 领之后的图都是这样）。第 7 天大奖格整张金黄，按颜色找常先挑中它
+        （11-21 第二下才点对，11-24 两下都点在大奖格、第 4 天没领），所以这种弹窗只认按钮：「领取」开头的点它（最多 2 下），
+        只剩「已领取」就当今天领过了、关掉。没读到「领取」但那一排有亮黄按钮：不乱点，关掉报可能没领。"""
+        btn = next(((x, y) for t, x, y in row if norm(t).startswith("领取")), None)
+        if btn and self.signin_btn < 2:
+            log(f"  签到弹窗（7 天活动）：点今天的「领取」@{btn}")
+            self.tap(*btn, wait=3)
+            self.signin_btn += 1
+            self.signin_claimed = True
+            self.ocr()
+            if self.confirm_got():
+                self.signin_got = True
+            else:
+                self.snap("signin_btn")
+            return True
+        if btn:
+            self.snap("signin_btn_noreact")
+            log("  签到弹窗（7 天活动）：「领取」点了 2 次还在，可能没领，关掉")
+            self.note = "签到弹窗「领取」点了没反应，可能没领（截图已存）"
+        elif self.signin_btn:
+            log("  签到弹窗（7 天活动）：今天的「领取」点过了、变成「已领取」，关掉")
+        elif self.claim_btn_pixels() > CLAIM_BTN_MIN:
+            self.snap("signin_btn_unread")
+            log("  签到弹窗（7 天活动）：那一排有亮黄按钮但没读出「领取」，可能没领，关掉")
+            self.note = "签到弹窗有「领取」按钮没读出字，可能没领（截图已存）"
+        else:
+            log("  签到弹窗（7 天活动）：只有「已领取」，今天已领，关掉")
+        self.tap(172, 80, wait=3)
+        return True
+
+    def claim_btn_pixels(self) -> int:
+        """7 天活动卡片下面那排（y 1045–1095）亮黄的像素数：没领的「领取」按钮底色 BGR(0,214,233)、色相 28。
+        离线实测：没领的约 11000、领过的和普通月签到弹窗都是 0。"""
+        hsv = cv2.cvtColor(self.img[1045:1095, 600:2360], cv2.COLOR_BGR2HSV)
+        m = (hsv[..., 0] >= 25) & (hsv[..., 0] <= 32) & (hsv[..., 1] > 200) & (hsv[..., 2] > 180)
+        return int(m.sum())
 
     def signin_today_x(self):
         """整排按颜色找今天那格的黄角标，返回角标中心 x（基准坐标），没有返回 None。

@@ -11,6 +11,11 @@ import subprocess
 import sys
 from pathlib import Path
 
+# 11-24 Windows：测试自己的输出用 UTF-8（英文 Windows 的控制台、管道是 cp1252，打印中文会报错）
+for _s in (sys.stdout, sys.stderr):
+    if hasattr(_s, "reconfigure"):
+        _s.reconfigure(encoding="utf-8", errors="replace")
+
 HERE = Path(__file__).resolve().parent
 ROOT = Path(os.environ.get("TEST_ROOT") or HERE.parent)
 os.environ.pop("ANDROID_SERIAL", None)          # 别让外面的环境变量影响「用户自己设了没有」
