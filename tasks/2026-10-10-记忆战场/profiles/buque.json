@@ -1,0 +1,44 @@
+{
+ "id": "buque",
+ "boss": "异星肃卫-补阙",
+ "difficulty": "SSS",
+ "learned": "2026-11-11",
+ "boss_idx": 0,
+ "lineup": {
+  "source": "11-11 推荐阵容（整体完整度优先 ON）第 1 行全部应用（100%）；训练页 阵容攻略→官方推荐第 1 行 = 同一队（shots/m18_lineup_applied_1111.png、m18_b0_official_p1_1111.png）",
+  "tab": "official",
+  "row": 1,
+  "score_ref": 47936
+ },
+ "team": [
+  "队长（深蓝黑发、白底）",
+  "银白发（金底）",
+  "粉发戴花"
+ ],
+ "elf": "粉棕发带角人偶",
+ "buff_mode": false,
+ "tutorial": null,
+ "opening": [],
+ "loop": {
+  "atk_per_cycle": 3,
+  "weapon_every": 1,
+  "ult_every": 2,
+  "elf_every": 4,
+  "evade_every": 2,
+  "switch_every": 12,
+  "qte": false
+ },
+ "note": "v1 不追 QTE 训练赢但倒计时余量小（约 20–30 秒）；11-11 待试 v2 追 QTE 比余量",
+ "results": [
+  {
+   "time": "02:30",
+   "mode": "训练",
+   "ver": "v1 不追QTE",
+   "win": true,
+   "score": 43484,
+   "game_time": "06:38（结算页总耗时）",
+   "hud_gone_s": 679.7,
+   "note": "685 秒打赢（参考 47936）；挑战倒计时最后读到 00:31（648.7 秒，帧识字），推断赢时只剩约 20–30 秒，余量小；日志 logs.nosync/buque_1111-021834"
+  }
+ ]
+}

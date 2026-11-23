@@ -1,0 +1,19 @@
+#!/bin/bash
+# 幻想引擎启动器 — 项目目录按 App 所在位置自动定位（App 须放在项目根目录内）
+DIR="$(cd "$(dirname "$0")/../../.." && pwd)"
+cd "$DIR" || {
+    osascript -e 'display dialog "幻想引擎: 项目目录不在预期位置, 请检查" buttons {"好"}' >/dev/null 2>&1
+    exit 1
+}
+# 界面运行环境: venv-qt.nosync（目录名不能以点开头，见 main.py 顶部说明）
+PY="$DIR/venv-qt.nosync/bin/python"
+if [ ! -x "$PY" ]; then
+    osascript -e 'display dialog "幻想引擎: 缺少界面运行环境(venv-qt.nosync), 请重新安装" buttons {"好"}' >/dev/null 2>&1
+    exit 1
+fi
+# 从 Finder 启动时 PATH 里没有 homebrew，补上（adb 在那里）
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+# 不 exec：保持本进程存活，Dock 才会显示 App 图标（而非 Python 图标）
+# 强制 arm64 启动链：避免子进程被 Rosetta(x86_64) 拖累导致 numpy/cv2 架构不兼容
+arch -arm64 "$PY" "$DIR/main.py"
+wait 2>/dev/null || true

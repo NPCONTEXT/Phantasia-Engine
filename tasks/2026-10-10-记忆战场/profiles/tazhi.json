@@ -1,0 +1,58 @@
+{
+ "id": "tazhi",
+ "boss": "塔之鉑梏",
+ "difficulty": "SSS",
+ "learned": "2026-10-29",
+ "boss_idx": 1,
+ "lineup": {
+  "source": "10-29 推荐阵容（整体完整度优先 ON）第 1 行全部应用（100%）；训练页 阵容攻略→官方推荐第 1 行（共 3 行）",
+  "tab": "official",
+  "row": 1,
+  "score_ref": 39960
+ },
+ "team": [
+  "队长（白发编辫、红衣）",
+  "银灰发（金底）",
+  "白发红挑染、带角（青底）"
+ ],
+ "elf": "白发戴纱冠人偶",
+ "buff_mode": false,
+ "tutorial": null,
+ "opening": [],
+ "loop": {
+  "atk_per_cycle": 3,
+  "weapon_every": 1,
+  "ult_every": 2,
+  "elf_every": 4,
+  "evade_every": 2,
+  "switch_every": 12,
+  "qte": false
+ },
+ "note": "v1（用这个）：不追 QTE、每 12 轮定时轮换、闪避每 2 轮；10-29 草稿：boss 名照抄本期BOSS.json（标签不变、不误判换期）；先用通用循环、不追 QTE；名字 OCR 读过 塔之鉑梏 / 塔之箔梏 / 塔之钳梏，标签固定用「塔之鉑梏」（本期BOSS.json 第一次读到的）",
+ "results": [
+  {
+   "time": "02:00",
+   "mode": "训练",
+   "ver": "v1 不追QTE",
+   "win": true,
+   "hud_gone_s": 216.6,
+   "note": "222 秒打赢（结算页 最高连击数 135，耗时 / 得分动画没读到）；199.6 秒大招闪光被 fox_stage 误认成花火演出，点了一次左上 + 狐面，没影响；日志 logs.nosync/tazhi_1029-015930"
+  },
+  {
+   "time": "10-29 23:47",
+   "mode": "正式",
+   "ver": "v1 不追QTE",
+   "win": true,
+   "hud_gone_s": 226.3,
+   "note": "第 6/6 关一次赢，结算 01:38 / 38808；星之环两段脚本干等 68–81、186–199 秒（各约 13 秒）；日志 logs.nosync/tazhi_real_1029-234703"
+  },
+  {
+   "time": "10-30 00:40",
+   "mode": "训练",
+   "ver": "v1 + 点星之环头像（v2.8.8）",
+   "win": true,
+   "hud_gone_s": 208.7,
+   "note": "验星之环：69.7、180.0 秒认到头像（0.86、0.87）各点 2 次，3.9、3.5 秒回战斗界面（暂停键消失段 13 秒 → 5 秒）；点了马上放必杀（第二段出 1502168）；结算 02:06 / 38800；日志 logs.nosync/tazhi_1030-003929"
+  }
+ ]
+}

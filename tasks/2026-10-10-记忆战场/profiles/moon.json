@@ -1,0 +1,145 @@
+{
+ "id": "moon",
+ "boss": "影骑士·月轮",
+ "learned": "2026-10-10",
+ "lineup": {
+  "source": "阵容攻略 → 精选推荐 + 完整度优先",
+  "row": 5,
+  "author": "笨蛋独秀痞阿姨",
+  "score_ref": 31946
+ },
+ "team": [
+  "天行·绘星之卷（队长，教程「大格」）",
+  "甜辣女孩（教程「卡」）",
+  "月下誓约·予爱以心（教程「月下」）"
+ ],
+ "elf": "小琪",
+ "buff_mode": false,
+ "tutorial": "开局切卡开大，放人偶切大格武器开大，月下QTE出场攒满动能狂化插地击杀BOSS。",
+ "opening": [
+  [
+   "switch",
+   1
+  ],
+  [
+   "wait",
+   1.2
+  ],
+  [
+   "tap",
+   "ult"
+  ],
+  [
+   "wait",
+   3.0
+  ],
+  [
+   "tap",
+   "elf"
+  ],
+  [
+   "wait",
+   2.0
+  ],
+  [
+   "switch",
+   2
+  ],
+  [
+   "wait",
+   1.2
+  ],
+  [
+   "tap",
+   "weapon"
+  ],
+  [
+   "wait",
+   1.0
+  ],
+  [
+   "tap",
+   "ult"
+  ],
+  [
+   "wait",
+   3.0
+  ],
+  [
+   "switch",
+   1
+  ],
+  [
+   "wait",
+   1.2
+  ],
+  [
+   "hold",
+   "atk",
+   2.0
+  ],
+  [
+   "tap",
+   "ult"
+  ]
+ ],
+ "loop": {
+  "atk_per_cycle": 3,
+  "weapon_every": 1,
+  "ult_every": 2,
+  "elf_every": 4,
+  "evade_every": 8,
+  "switch_every": 12,
+  "qte": false
+ },
+ "note": "v4=v1 的打法（实测最快）：开局 卡开大→人偶→月下武器+大→卡蓄力+大；之后每约 7 秒轮换下一位、各技能轮流按，不追 QTE。v2 追 QTE 83 秒、v3 只用月下 168 秒都更慢",
+ "boss_idx": 2,
+ "results": [
+  {
+   "time": "01:12",
+   "mode": "训练",
+   "ver": "v1",
+   "win": true,
+   "hud_gone_s": 46,
+   "note": "开局在出场动画里按（没等倒计时）"
+  },
+  {
+   "time": "01:20",
+   "mode": "训练",
+   "ver": "v1",
+   "win": true,
+   "hud_gone_s": 50.8
+  },
+  {
+   "time": "01:25",
+   "mode": "训练",
+   "ver": "v2 追QTE",
+   "win": true,
+   "hud_gone_s": 83.2
+  },
+  {
+   "time": "01:27",
+   "mode": "训练",
+   "ver": "v3 只用月下",
+   "win": true,
+   "hud_gone_s": 168.5
+  },
+  {
+   "time": "01:31",
+   "mode": "训练",
+   "ver": "v4=v1",
+   "win": true,
+   "hud_gone_s": 51.1
+  },
+  {
+   "time": "02:03",
+   "mode": "正式",
+   "ver": "v4",
+   "win": true,
+   "hud_gone_s": 46.5
+  }
+ ],
+ "real_time_note": "hud_gone_s 从进战斗算到战斗界面消失，含约 5 秒 BOSS 出场；实际开打约 46 秒",
+ "official_names": "天行·绘星之卷、甜辣女孩、月下誓约·予爱以心（开战锁定框原文）",
+ "difficulty": "SS"
+}

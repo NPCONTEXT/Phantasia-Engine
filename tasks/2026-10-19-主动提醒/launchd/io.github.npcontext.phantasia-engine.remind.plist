@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- 幻想引擎主动提醒：到点看播放记录，没做完的推到微信。这是模板：__PROJECT_DIR__、__HOME__ 要换成实际路径，
+     怎么装、怎么停见上一级目录的 README.md。 -->
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>io.github.npcontext.phantasia-engine.remind</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/usr/bin/python3</string>
+		<string>__PROJECT_DIR__/tasks/2026-10-19-主动提醒/remind.py</string>
+	</array>
+	<!-- 每日 02:00（崩3、妮姬、绝区零；周一还有记忆战场、乐土）；周二、周六 23:00（超弦） -->
+	<key>StartCalendarInterval</key>
+	<array>
+		<dict><key>Hour</key><integer>2</integer><key>Minute</key><integer>0</integer></dict>
+		<dict><key>Weekday</key><integer>2</integer><key>Hour</key><integer>23</integer><key>Minute</key><integer>0</integer></dict>
+		<dict><key>Weekday</key><integer>6</integer><key>Hour</key><integer>23</integer><key>Minute</key><integer>0</integer></dict>
+	</array>
+	<!-- 每 10 分钟补查一次（顺序播放跑完后补发、网络没通时重试）；播放记录一更新也查 -->
+	<key>StartInterval</key>
+	<integer>600</integer>
+	<key>WatchPaths</key>
+	<array>
+		<string>__PROJECT_DIR__/runs/history.jsonl</string>
+	</array>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>PYTHONIOENCODING</key>
+		<string>utf-8</string>
+		<key>LANG</key>
+		<string>en_US.UTF-8</string>
+	</dict>
+	<key>StandardOutPath</key>
+	<string>__HOME__/Library/Logs/phantasia-engine-remind.log</string>
+	<key>StandardErrorPath</key>
+	<string>__HOME__/Library/Logs/phantasia-engine-remind.log</string>
+	<key>ProcessType</key>
+	<string>Background</string>
+</dict>
+</plist>

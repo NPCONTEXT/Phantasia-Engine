@@ -1,0 +1,219 @@
+{
+ "id": "dense_try",
+ "zone": "密集区",
+ "stage": "聚变-密集区（10-16 这期，元素环境）",
+ "lineup": "推荐阵容 热门阵容 完整度优先 ON 第 1 行一键编队（10-17 作者定）",
+ "team": [
+  "队员1（队长）",
+  "队员2",
+  "队员3"
+ ],
+ "loop": {
+  "atk_per_cycle": 3,
+  "weapon_every": 1,
+  "ult_every": 2,
+  "elf_every": 4,
+  "evade_every": 2,
+  "switch_every": 12,
+  "qte": true
+ },
+ "note": "C3：通用循环 + 追 QTE",
+ "results": [
+  {
+   "time": "10-17 00:17",
+   "zone": "上",
+   "res": "win",
+   "game_time": "01:01",
+   "score": 6000,
+   "layer": {
+    "当前积分": "6000",
+    "战斗时长": "00:54"
+   },
+   "rec_row1": [
+    "00:21",
+    "100%"
+   ],
+   "log": "dense_try_1017-001743",
+   "note": "settle 认不出主页（深渊信务）报错，手动补记",
+   "full": true,
+   "env": "聚变·元素"
+  },
+  {
+   "time": "10-20 01:01",
+   "zone": "上",
+   "res": "win",
+   "full": true,
+   "game_time": "00:46",
+   "score": 6000,
+   "layer": {
+    "当前积分": "• 6000",
+    "战斗时长": "00:43"
+   },
+   "hud_gone_s": 121.1,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "log": "dense_try_1020-005925",
+   "env": "狙击·远程"
+  },
+  {
+   "time": "10-25 02:15",
+   "zone": "上",
+   "res": "win",
+   "full": true,
+   "game_time": "01:05",
+   "score": 6000,
+   "layer": {
+    "当前积分": "• 6000",
+    "战斗时长": "01:02"
+   },
+   "hud_gone_s": 102.6,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "血棘·血棘",
+   "log": "dense_try_1025-021258"
+  },
+  {
+   "time": "11-01 02:21",
+   "zone": "上",
+   "res": "win",
+   "full": true,
+   "game_time": "01:40",
+   "score": 6000,
+   "layer": {
+    "当前积分": "• 6000",
+    "战斗时长": "01:37"
+   },
+   "hud_gone_s": 179.5,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "天敌·克制",
+   "log": "dense_try_1101-021737"
+  },
+  {
+   "time": "11-03 01:33",
+   "zone": "上",
+   "res": "win",
+   "full": true,
+   "game_time": "01:42",
+   "score": 6000,
+   "layer": {
+    "当前积分": "6000",
+    "战斗时长": "01:41"
+   },
+   "hud_gone_s": 183.3,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "闪耀·烁星",
+   "down_s": null,
+   "log": "dense_try_1103-012958"
+  },
+  {
+   "time": "11-07 00:05",
+   "zone": "上",
+   "res": "win",
+   "full": true,
+   "game_time": "02:02",
+   "score": 6000,
+   "layer": {
+    "当前积分": "6000",
+    "战斗时长": "01:59"
+   },
+   "hud_gone_s": 191.8,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "怯火·火焰",
+   "down_s": null,
+   "log": "dense_try_1107-000203"
+  },
+  {
+   "time": "11-10 02:28",
+   "zone": "上",
+   "res": "win",
+   "full": true,
+   "game_time": "04:56",
+   "score": 6000,
+   "layer": {
+    "当前积分": "• 6000",
+    "战斗时长": "04:53"
+   },
+   "hud_gone_s": 433.9,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "惧冰·冰霜",
+   "down_s": null,
+   "log": "dense_try_1110-022059"
+  },
+  {
+   "time": "11-13 23:54",
+   "zone": "上",
+   "res": "win",
+   "full": true,
+   "game_time": "01:09",
+   "score": 6000,
+   "layer": {
+    "当前积分": "6000",
+    "战斗时长": "01:06"
+   },
+   "hud_gone_s": 112.8,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "燃素·点燃",
+   "down_s": null,
+   "log": "dense_try_1113-235225"
+  },
+  {
+   "time": "11-21 00:15",
+   "zone": "上",
+   "res": "win",
+   "full": true,
+   "game_time": "01:20",
+   "score": 6000,
+   "layer": {
+    "当前积分": "• 6000",
+    "战斗时长": "01:17"
+   },
+   "hud_gone_s": 142.1,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "虚数·虚数",
+   "down_s": null,
+   "log": "dense_try_1121-001226"
+  }
+ ],
+ "best_row": 1,
+ "best_row_env": {
+  "聚变·元素": 1,
+  "狙击·远程": 1,
+  "血棘·血棘": 1,
+  "◎天敌·克制": 1,
+  "闪耀·烁星": 1,
+  "佐火·火焰": 1,
+  "冰·冰霜": 1,
+  "燃素·点燃": 1,
+  "虚数·虚数": 1
+ }
+}

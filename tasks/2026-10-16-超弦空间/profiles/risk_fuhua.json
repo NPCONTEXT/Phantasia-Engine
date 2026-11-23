@@ -1,0 +1,184 @@
+{
+ "id": "risk_fuhua",
+ "zone": "高危区",
+ "style": "fuhua_star",
+ "stage": "高危区（11-06 15:00 开的这期，火焰环境；限时 5 分钟，越快越多，满分 4000）",
+ "lineup": "选人页现成的队（用户手配，ss_fight.py --keep-team）：1 号符华（浮生·渡尘之羽，队长）/ 2 号希儿 / 3 号白发青底 + 红发人偶，同记忆战场 profiles/yunying.json",
+ "team": [
+  "符华（浮生·渡尘之羽，队长）",
+  "希儿",
+  "白发青底（3 号）"
+ ],
+ "elf": "红发人偶",
+ "loop": {
+  "atk_per_cycle": 3,
+  "weapon_every": 1,
+  "ult_every": 2,
+  "elf_every": 4,
+  "evade_every": 4,
+  "switch_every": 12,
+  "qte": true
+ },
+ "note": "11-07 作者：「可以换成昨天战场的符华+希儿+那个啥那个专属打法试试，应该会快很多」；先单打一场试，和推荐阵容第 1 行最好 3714（局内 01:28）比",
+ "results": [
+  {
+   "time": "11-07 01:45",
+   "zone": "右",
+   "res": "win",
+   "full": false,
+   "game_time": "01:23",
+   "score": 3733,
+   "layer": {
+    "当前积分": null,
+    "战斗时长": "01:20"
+   },
+   "hud_gone_s": 125.7,
+   "row": null,
+   "rec": "现成的队",
+   "env": null,
+   "down_s": null,
+   "log": "risk_fuhua_1107-014244"
+  },
+  {
+   "time": "11-07 01:51",
+   "zone": "右",
+   "res": "win",
+   "full": false,
+   "game_time": "01:08",
+   "score": 3781,
+   "layer": {
+    "当前积分": null,
+    "战斗时长": "01:05"
+   },
+   "hud_gone_s": 92.1,
+   "row": null,
+   "rec": "现成的队",
+   "env": null,
+   "down_s": null,
+   "log": "risk_fuhua_1107-014924"
+  },
+  {
+   "time": "11-08 01:46",
+   "zone": "右",
+   "res": "win",
+   "full": false,
+   "game_time": "01:15",
+   "score": 3760,
+   "layer": {},
+   "hud_gone_s": 105.9,
+   "row": null,
+   "rec": "现成的队",
+   "env": "法火·火焰",
+   "down_s": null,
+   "log": "risk_fuhua_1108-014440"
+  },
+  {
+   "time": "11-08 01:49",
+   "zone": "右",
+   "res": "win",
+   "full": false,
+   "game_time": "01:04",
+   "score": 3796,
+   "layer": {
+    "当前积分": null,
+    "战斗时长": "01:01"
+   },
+   "hud_gone_s": 103.3,
+   "row": null,
+   "rec": "现成的队",
+   "env": "法火·火焰",
+   "down_s": null,
+   "log": "risk_fuhua_1108-014737"
+  },
+  {
+   "time": "11-08 01:52",
+   "zone": "右",
+   "res": "win",
+   "full": false,
+   "game_time": "01:08",
+   "score": 3783,
+   "layer": {},
+   "hud_gone_s": 102.3,
+   "row": null,
+   "rec": "现成的队",
+   "env": "怯火·火焰",
+   "down_s": null,
+   "log": "risk_fuhua_1108-015042"
+  },
+  {
+   "time": "11-08 01:55",
+   "zone": "右",
+   "res": "win",
+   "full": false,
+   "game_time": "01:02",
+   "score": 3803,
+   "layer": {
+    "当前积分": null,
+    "战斗时长": "00:59"
+   },
+   "hud_gone_s": 95.9,
+   "row": null,
+   "rec": "现成的队",
+   "env": "怯火·火焰",
+   "down_s": null,
+   "log": "risk_fuhua_1108-015335"
+  },
+  {
+   "time": "11-17 02:52",
+   "zone": "上",
+   "res": "win",
+   "full": true,
+   "game_time": "04:21",
+   "score": 6000,
+   "layer": {
+    "当前积分": "• 6000",
+    "战斗时长": "04:16"
+   },
+   "hud_gone_s": 429.7,
+   "row": null,
+   "rec": "现成的队",
+   "env": null,
+   "down_s": null,
+   "log": "risk_fuhua_1117-024454"
+  },
+  {
+   "time": "11-17 03:23",
+   "zone": "下",
+   "res": "win",
+   "full": false,
+   "game_time": "05:01",
+   "score": 5865,
+   "layer": {
+    "当前积分": "4 5865",
+    "战斗时长": "05:00"
+   },
+   "hud_gone_s": 447.8,
+   "row": null,
+   "rec": "现成的队",
+   "env": null,
+   "down_s": null,
+   "log": "risk_fuhua_1117-031541"
+  },
+  {
+   "time": "11-17 03:32",
+   "zone": "右",
+   "res": "win",
+   "full": false,
+   "game_time": "05:01",
+   "score": 2154,
+   "layer": {
+    "当前积分": null,
+    "战斗时长": "05:00"
+   },
+   "hud_gone_s": 443.0,
+   "row": null,
+   "rec": "现成的队",
+   "env": null,
+   "down_s": null,
+   "log": "risk_fuhua_1117-032425"
+  }
+ ],
+ "period": "2026-11-04 22:00",
+ "period_note": "11-07 作者：「只是这一期用」——period = 本期起点（ss_run.period_key）；换期后 ss_run 回推荐阵容、记一行提醒",
+ "reminded": "2026-11-18 22:00"
+}

@@ -1,0 +1,43 @@
+{
+ "id": "kong",
+ "boss": "空之律者",
+ "difficulty": "SS",
+ "learned": "2026-10-15",
+ "boss_idx": 2,
+ "lineup": {
+  "source": "10-15 推荐阵容（整体完整度优先 ON）第 1 行全部应用；训练页 阵容攻略→推荐阵容→官方推荐",
+  "tab": "official",
+  "row": 2,
+  "score_ref": 31946
+ },
+ "team": [
+  "白发（队长，队长技「无名游侠的旅途」）",
+  "猫耳棕发 Sp（名字待开战锁定框）",
+  "浅蓝发 Sp（名字待开战锁定框）"
+ ],
+ "elf": "粉发光环人偶（名字待查）",
+ "buff_mode": false,
+ "tutorial": null,
+ "opening": [],
+ "loop": {
+  "atk_per_cycle": 3,
+  "weapon_every": 1,
+  "ult_every": 2,
+  "elf_every": 4,
+  "evade_every": 2,
+  "switch_every": 12,
+  "qte": false
+ },
+ "note": "v3：通用循环（闪避每 2 轮、倒下不再切）；最高 SS，本期减负后 2/5，正式要连打 A、S、SS 三关；训练按 SS 打",
+ "results": [
+  {
+   "time": "01:10",
+   "mode": "训练",
+   "ver": "v3",
+   "win": true,
+   "score": 29379,
+   "hud_gone_s": 82.8,
+   "note": "SS 训练 92.5 秒打赢（结算 连击 81 / 得分 29379）"
+  }
+ ]
+}

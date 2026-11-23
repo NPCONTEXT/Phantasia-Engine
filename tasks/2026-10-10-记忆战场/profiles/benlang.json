@@ -1,0 +1,52 @@
+{
+ "id": "benlang",
+ "boss": "奔狼的领主",
+ "difficulty": "SSS",
+ "learned": "2026-10-23",
+ "boss_idx": 1,
+ "lineup": {
+  "source": "10-23 推荐阵容（整体完整度优先 ON）第 1 行全部应用；训练页 阵容攻略→推荐阵容→官方推荐第 1 行",
+  "tab": "official",
+  "row": 1,
+  "score_ref": 39906
+ },
+ "team": [
+  "孑遗千星（队长，墨绿灰发，队长技「致友人们」）",
+  "终焉之律者（白发）",
+  "女武神·重机（黑白发）"
+ ],
+ "elf": "戴护目镜的金发人偶",
+ "buff_mode": false,
+ "tutorial": null,
+ "opening": [],
+ "loop": {
+  "atk_per_cycle": 3,
+  "weapon_every": 1,
+  "ult_every": 2,
+  "elf_every": 4,
+  "evade_every": 2,
+  "switch_every": 12,
+  "qte": false
+ },
+ "note": "v1（用这个）：不追 QTE、每 12 轮定时轮换、闪避每 2 轮；训练选人页没有「特殊规则」区；队长 孑遗千星（队长技「致友人们」）；OCR 名字有时读成「奔狼的领生」",
+ "results": [
+  {
+   "time": "03:23",
+   "mode": "训练",
+   "ver": "v1 不追QTE",
+   "win": true,
+   "score": 39106,
+   "game_time": "01:23",
+   "hud_gone_s": 129.0,
+   "note": "138.8 秒打赢（结算 连击 116 / 耗时 01:23 / 得分 39106），全程无人值守；03:21 第一次导航卡在 team_ok（训练选人页没有特殊规则区），修 ma_nav.team_ok 后重跑"
+  },
+  {
+   "time": "03:37",
+   "mode": "正式",
+   "ver": "v1 不追QTE",
+   "win": true,
+   "hud_gone_s": 136.4,
+   "note": "第 6/6 关一次赢（增益关），正式战 03:37–03:40；正式选人页也没有特殊规则区（team_ok 新判断过了）"
+  }
+ ]
+}

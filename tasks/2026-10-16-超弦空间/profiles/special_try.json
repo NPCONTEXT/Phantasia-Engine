@@ -1,0 +1,286 @@
+{
+ "id": "special_try",
+ "zone": "特异区",
+ "stage": "畏血-特异区（10-16 这期，物理环境）",
+ "lineup": "推荐阵容 官方推荐 完整度优先 ON 第 1 行一键编队（10-17 作者改：热门的老角色）",
+ "team": [
+  "队员1（队长）",
+  "队员2",
+  "队员3"
+ ],
+ "loop": {
+  "atk_per_cycle": 3,
+  "weapon_every": 1,
+  "ult_every": 2,
+  "elf_every": 4,
+  "evade_every": 2,
+  "switch_every": 12,
+  "qte": true,
+  "extra": [
+   {
+    "name": "关卡技能",
+    "xy": [
+     1747,
+     933
+    ],
+    "every": 3
+   }
+  ]
+ },
+ "note": "第 3 次：换官方推荐第一行；通用循环 + 追 QTE + 关卡技能每 3 轮",
+ "results": [
+  {
+   "time": "10-17 00:28",
+   "zone": "下",
+   "res": "win",
+   "game_time": "05:01",
+   "score": 3161,
+   "layer": {
+    "当前积分": "¢ 3161",
+    "战斗时长": "05:00"
+   },
+   "hud_gone_s": 322.2,
+   "rec_row1": [
+    "00:43",
+    "100%"
+   ],
+   "log": "special_try_1017-002236",
+   "full": false,
+   "env": "畏血·物理"
+  },
+  {
+   "time": "10-17 00:37",
+   "zone": "下",
+   "res": "win",
+   "full": false,
+   "game_time": "05:01",
+   "score": 2422,
+   "layer": {},
+   "hud_gone_s": 319.8,
+   "rec_row1": [
+    "00:43",
+    "100%"
+   ],
+   "log": "special_try_1017-003210",
+   "env": "畏血·物理"
+  },
+  {
+   "time": "10-17 00:53",
+   "zone": "下",
+   "res": "win",
+   "full": true,
+   "game_time": "01:09",
+   "score": 6000,
+   "layer": {
+    "当前积分": "6000",
+    "战斗时长": "01:06"
+   },
+   "hud_gone_s": 132.0,
+   "rec_row1": [
+    null,
+    "100%"
+   ],
+   "log": "special_try_1017-005031",
+   "env": "畏血·物理"
+  },
+  {
+   "time": "10-20 01:05",
+   "zone": "下",
+   "res": "win",
+   "full": true,
+   "game_time": "00:56",
+   "score": 6000,
+   "layer": {
+    "当前积分": "• 6000",
+    "战斗时长": "00.：50"
+   },
+   "hud_gone_s": 118.0,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "log": "special_try_1020-010304",
+   "env": "协奏·交响"
+  },
+  {
+   "time": "10-25 02:18",
+   "zone": "下",
+   "res": "win",
+   "full": true,
+   "game_time": "00:56",
+   "score": 6000,
+   "layer": {
+    "当前积分": "• 6000",
+    "战斗时长": "00:53"
+   },
+   "hud_gone_s": 97.2,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "聚变·元素",
+   "log": "special_try_1025-021616"
+  },
+  {
+   "time": "11-01 02:28",
+   "zone": "下",
+   "res": "win",
+   "full": true,
+   "game_time": "04:01",
+   "score": 6000,
+   "layer": {
+    "当前积分": "• 6000",
+    "战斗时长": "03:58"
+   },
+   "hud_gone_s": 381.3,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "量子·量子",
+   "log": "special_try_1101-022206"
+  },
+  {
+   "time": "11-03 01:41",
+   "zone": "下",
+   "res": "win",
+   "full": true,
+   "game_time": "04:42",
+   "score": 6000,
+   "layer": {
+    "当前积分": "• 6000",
+    "战斗时长": "04:39"
+   },
+   "hud_gone_s": 383.8,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "惧冰·冰霜",
+   "down_s": null,
+   "log": "special_try_1103-013440"
+  },
+  {
+   "time": "11-07 00:09",
+   "zone": "下",
+   "res": "win",
+   "full": true,
+   "game_time": "01:09",
+   "score": 6000,
+   "layer": {
+    "当前积分": "• 6000",
+    "战斗时长": "01:06"
+   },
+   "hud_gone_s": 120.0,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "虚数·虚数",
+   "down_s": null,
+   "log": "special_try_1107-000654"
+  },
+  {
+   "time": "11-10 02:34",
+   "zone": "下",
+   "res": "win",
+   "full": true,
+   "game_time": "02:00",
+   "score": 6000,
+   "layer": {
+    "当前积分": "6000",
+    "战斗时长": "01:57"
+   },
+   "hud_gone_s": 239.5,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "狙击·远程",
+   "down_s": null,
+   "log": "special_try_1110-022949"
+  },
+  {
+   "time": "11-13 23:59",
+   "zone": "下",
+   "res": "win",
+   "full": true,
+   "game_time": "02:07",
+   "score": 6000,
+   "layer": {
+    "当前积分": "• 6000",
+    "战斗时长": "02:04"
+   },
+   "hud_gone_s": 163.9,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "血棘·血棘",
+   "down_s": null,
+   "log": "special_try_1113-235551"
+  },
+  {
+   "time": "11-17 22:40",
+   "zone": "下",
+   "res": "win",
+   "full": true,
+   "game_time": "03:06",
+   "score": 6000,
+   "layer": {
+    "当前积分": "• 6000",
+    "战斗时长": "03:01"
+   },
+   "hud_gone_s": 291.9,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "恐雷·雷电",
+   "down_s": null,
+   "log": "special_try_1117-223525"
+  },
+  {
+   "time": "11-21 00:21",
+   "zone": "下",
+   "res": "win",
+   "full": true,
+   "game_time": "02:28",
+   "score": 6000,
+   "layer": {
+    "当前积分": "• 6000",
+    "战斗时长": "02:27"
+   },
+   "hud_gone_s": 255.2,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "闪耀·烁星",
+   "down_s": null,
+   "log": "special_try_1121-001623"
+  }
+ ],
+ "best_row": 1,
+ "best_row_env": {
+  "畏血·物理": 1,
+  "协奏·交响": 1,
+  "聚变·元素": 1,
+  "量子·量子": 1,
+  "冰·冰霜": 1,
+  "虚数·虚数": 1,
+  "狙击·远程": 1,
+  "血棘·血棘": 1,
+  "恐雷·雷电": 1,
+  "闪耀·烁星": 1
+ }
+}

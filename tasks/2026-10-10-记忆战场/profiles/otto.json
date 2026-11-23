@@ -1,0 +1,151 @@
+{
+ "id": "otto",
+ "boss": "伪神奥托",
+ "boss_idx": 1,
+ "learned": "2026-10-10",
+ "lineup": {
+  "source": "阵容攻略 → 精选推荐 + 完整度优先",
+  "row": 6,
+  "author": "威菌儿QAQ",
+  "score_ref": 39946
+ },
+ "team": [
+  "天光驰彻（队长，教程「小鹅」）",
+  "丽塔",
+  "科斯魔（教程「龙科」）"
+ ],
+ "elf": "眼镜黑发人偶",
+ "buff_mode": false,
+ "tutorial": "1、开局小鹅点按武器上滑板，顿一下后开始蓄力卡好BOSS起身命中，龙科QTE出场a一下后释放武器+大招，丽塔QTE出场释放武器，跳+闪+武器蹭第一段刀波并衔接分支，等待分支落地后再释放武器，闪+跳+闪+跳蹭第二段刀波并开启星之环。2、丽塔斗转＋分支＋武器+大招+武器收掉P1.过阶段释放小鹅和龙科的斗转，切龙科闪避BOSS落地，切小鹅卡好BOSS起身开大收尾即可。",
+ "opening": [
+  [
+   "tap",
+   "weapon"
+  ],
+  [
+   "wait",
+   0.5
+  ],
+  [
+   "hold",
+   "atk",
+   1.8
+  ],
+  [
+   "qte",
+   3.0,
+   2
+  ],
+  [
+   "wait",
+   0.8
+  ],
+  [
+   "tap",
+   "atk"
+  ],
+  [
+   "wait",
+   0.3
+  ],
+  [
+   "tap",
+   "weapon"
+  ],
+  [
+   "wait",
+   0.8
+  ],
+  [
+   "tap",
+   "ult"
+  ],
+  [
+   "wait",
+   3.0
+  ],
+  [
+   "qte",
+   3.0,
+   1
+  ],
+  [
+   "wait",
+   0.8
+  ],
+  [
+   "tap",
+   "weapon"
+  ],
+  [
+   "wait",
+   0.8
+  ],
+  [
+   "tap",
+   "evade"
+  ],
+  [
+   "tap",
+   "weapon"
+  ],
+  [
+   "wait",
+   0.5
+  ],
+  [
+   "hold",
+   "atk",
+   1.0
+  ],
+  [
+   "wait",
+   1.0
+  ],
+  [
+   "tap",
+   "weapon"
+  ]
+ ],
+ "loop": {
+  "atk_per_cycle": 3,
+  "weapon_every": 1,
+  "ult_every": 2,
+  "elf_every": 4,
+  "evade_every": 5,
+  "switch_every": 12,
+  "qte": false
+ },
+ "note": "v1：开局照教程第 1 段（跳、星之环、斗转星移暂缺）；后面交给通用循环",
+ "results": [
+  {
+   "time": "01:41",
+   "mode": "训练",
+   "ver": "v1",
+   "win": true,
+   "hud_gone_s": 101.0,
+   "ingame": "00:32",
+   "score": 39519
+  },
+  {
+   "time": "01:49",
+   "mode": "训练",
+   "ver": "v1",
+   "win": true,
+   "hud_gone_s": 134.0,
+   "ingame": "00:20",
+   "score": 39256
+  },
+  {
+   "time": "01:59",
+   "mode": "正式",
+   "ver": "v1",
+   "win": true,
+   "hud_gone_s": 129.7,
+   "ingame": "00:03?"
+  }
+ ],
+ "real_time_note": "hud_gone_s 从进战斗算到战斗界面消失，含约 5 秒 BOSS 出场",
+ "official_names": "天光驰彻、窈窕谍影、逆命魔龙·降临（开战锁定框原文，按队伍顺序对应 小鹅/丽塔/科斯魔，推断）",
+ "difficulty": "SSS"
+}

@@ -1,0 +1,75 @@
+{
+ "id": "yunying",
+ "boss": "陨影冰骸",
+ "difficulty": "SSS",
+ "learned": "2026-11-05",
+ "boss_idx": 0,
+ "lineup": {
+  "source": "11-05 作者配队 = 官方推荐第 3 行（符华 / 希儿 / 白发青底 + 红发人偶，参考 47872）；正式选人页照样一键编队",
+  "tab": "official",
+  "row": 3,
+  "force": true,
+  "score_ref": 47872
+ },
+ "team": [
+  "符华（浮生·渡尘之羽，队长）",
+  "希儿",
+  "白发青底（3 号）"
+ ],
+ "elf": "红发人偶",
+ "buff_mode": false,
+ "tutorial": null,
+ "opening": [],
+ "loop": {
+  "atk_per_cycle": 3,
+  "weapon_every": 1,
+  "ult_every": 2,
+  "elf_every": 4,
+  "evade_every": 4,
+  "switch_every": 12,
+  "qte": true
+ },
+ "note": "11-05 起用 style fuhua_star（ma_style_fuhua.py，作者教的打法 + 示范录像）；以前 v2：红白发 / 深蓝黑发 / 粉发戴花 + 红发人偶，追 QTE 通用循环 597 秒赢（44570、局内 06:26）；v2（用这个）：追 QTE（v1 不追 QTE 输、倒两人；v2 赢、没人倒）；11-05 草稿：boss 名照抄本期BOSS.json（标签不变、不误判换期）；先用通用循环、不追 QTE",
+ "results": [
+  {
+   "time": "01:53",
+   "mode": "训练",
+   "ver": "v1 不追QTE",
+   "win": false,
+   "score": 21704,
+   "game_time": "05:00 走完",
+   "hud_gone_s": 647.7,
+   "note": "651 秒倒计时走完输（约 21704，帧 644.8 秒读的；参考 47904）；467、493 秒粉发戴花、深蓝黑发先后倒下，只剩队长；BOSS 590 秒起血条 x6；fox_stage 把红色大招动画认成花火演出 12 次（多点左上 + 普攻附近，没影响）；每帧间隔 0.60 秒和以前一样（微信占一核没拖慢）；日志 logs.nosync/yunying_1105-015325"
+  },
+  {
+   "time": "02:06",
+   "mode": "训练",
+   "ver": "v2 追QTE",
+   "win": true,
+   "score": 44570,
+   "game_time": "06:26",
+   "hud_gone_s": 587.5,
+   "note": "597 秒打赢（结算 最高连击 523 / 战斗耗时 06:26 / 得分 44570，参考 47904）；没人倒；QTE 切人 167+28 次；日志 logs.nosync/yunying_1105-020652"
+  },
+  {
+   "time": "03:58",
+   "mode": "训练",
+   "ver": "style fuhua_star v1",
+   "win": true,
+   "score": 45233,
+   "game_time": "04:11",
+   "hud_gone_s": 437.1,
+   "note": "442.5 秒打赢（结算 最高连击 403 / 战斗耗时 04:11 / 得分 45233；v2 通用循环 06:26 / 44570；作者手打示范 02:14 / 47072）；星之环 4 次都是先下后上再大招；星之环完了还硬换符华和 QTE 抢了约 7 秒（之后已改，只离线）；日志 logs.nosync/yunying_1105-035715"
+  }
+ ],
+ "loop_v1_backup": {
+  "atk_per_cycle": 3,
+  "weapon_every": 1,
+  "ult_every": 2,
+  "elf_every": 4,
+  "evade_every": 2,
+  "switch_every": 12,
+  "qte": false
+ },
+ "style": "fuhua_star"
+}

@@ -1,0 +1,157 @@
+{
+ "id": "nael",
+ "boss": "陨星-奈埃尔",
+ "boss_idx": 0,
+ "learned": "2026-10-10",
+ "lineup": {
+  "source": "阵容攻略 → 精选推荐 + 完整度优先",
+  "row": 1,
+  "author": "折纸灬成鸢",
+  "score_ref": 47888
+ },
+ "team": [
+  "琪亚娜（队长）",
+  "薇塔",
+  "松雀"
+ ],
+ "elf": "银发戴冠人偶",
+ "buff_mode": false,
+ "tutorial": "1.开局琪亚娜闪避BOSS攻击后，切薇塔QTE出场平A一次使用必杀技，松雀QTE出场闪避接一次平A后使用分支和必杀技，琪亚娜QTE出场使用武器主动击杀BOSS一阶段 2.转阶段琪亚娜使用分支后，薇塔QTE出场，闪避到BOSS正面中心使用必杀技和武器主动，平A一轮后切松雀QTE出场开启星之环，松雀斗转星移后使用分支，琪亚娜出场使用武器主动和必杀技，松雀QTE后使用分支，再切琪亚娜斗转星移出场使用武器主动，最后松雀QTE后使用分支必杀技击杀BOSS",
+ "opening": [
+  [
+   "wait",
+   1.0
+  ],
+  [
+   "tap",
+   "evade"
+  ],
+  [
+   "wait",
+   0.4
+  ],
+  [
+   "taps",
+   "atk",
+   3,
+   0.15
+  ],
+  [
+   "qte",
+   3.0,
+   1
+  ],
+  [
+   "wait",
+   0.8
+  ],
+  [
+   "tap",
+   "atk"
+  ],
+  [
+   "wait",
+   0.3
+  ],
+  [
+   "tap",
+   "ult"
+  ],
+  [
+   "wait",
+   3.0
+  ],
+  [
+   "qte",
+   3.0,
+   2
+  ],
+  [
+   "wait",
+   0.8
+  ],
+  [
+   "tap",
+   "evade"
+  ],
+  [
+   "wait",
+   0.3
+  ],
+  [
+   "tap",
+   "atk"
+  ],
+  [
+   "wait",
+   0.3
+  ],
+  [
+   "hold",
+   "atk",
+   1.0
+  ],
+  [
+   "tap",
+   "ult"
+  ],
+  [
+   "wait",
+   3.0
+  ],
+  [
+   "qte",
+   3.0,
+   0
+  ],
+  [
+   "wait",
+   0.8
+  ],
+  [
+   "tap",
+   "weapon"
+  ]
+ ],
+ "loop": {
+  "atk_per_cycle": 3,
+  "weapon_every": 1,
+  "ult_every": 2,
+  "elf_every": 4,
+  "evade_every": 5,
+  "switch_every": 12,
+  "qte": false
+ },
+ "note": "v1：开局照教程第 1 段；第 2 段（转阶段、星之环、斗转星移）交给通用循环（QTE 优先）",
+ "results": [
+  {
+   "time": "01:36",
+   "mode": "训练",
+   "ver": "v1",
+   "win": true,
+   "hud_gone_s": 196.0,
+   "ingame": "01:15",
+   "score": 46928
+  },
+  {
+   "time": "01:44",
+   "mode": "训练",
+   "ver": "v1",
+   "win": true,
+   "hud_gone_s": 251.0,
+   "ingame": "01:42"
+  },
+  {
+   "time": "01:54",
+   "mode": "正式",
+   "ver": "v1",
+   "win": true,
+   "hud_gone_s": 229.4,
+   "ingame": "01:34",
+   "score": 46572
+  }
+ ],
+ "real_time_note": "hud_gone_s 从进战斗算到战斗界面消失，含约 5 秒 BOSS 出场",
+ "official_names": "炽愿吉星、瞒天乐游·曙影、孑遗千星（开战锁定框原文，按队伍顺序对应 琪亚娜/薇塔/松雀，推断）",
+ "difficulty": "SSS"
+}

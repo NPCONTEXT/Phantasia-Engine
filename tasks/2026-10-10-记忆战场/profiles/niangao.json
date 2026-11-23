@@ -1,0 +1,70 @@
+{
+ "id": "niangao",
+ "boss": "无敌嬉岁瑞鼓·年年糕糕号",
+ "difficulty": "SSS",
+ "learned": "2026-10-15",
+ "boss_idx": 0,
+ "lineup": {
+  "source": "10-15 推荐阵容（整体完整度优先 ON）第 1 行全部应用；训练页 阵容攻略→推荐阵容→官方推荐",
+  "tab": "official",
+  "row": 1,
+  "score_ref": 47920
+ },
+ "team": [
+  "偃月叩晓（队长，深蓝长发）",
+  "白发 S（名字待开战锁定框）",
+  "粉发 S（名字待开战锁定框）"
+ ],
+ "elf": "金发人偶（名字待查）",
+ "buff_mode": false,
+ "tutorial": null,
+ "opening": [],
+ "loop": {
+  "atk_per_cycle": 3,
+  "weapon_every": 1,
+  "ult_every": 2,
+  "elf_every": 4,
+  "evade_every": 2,
+  "switch_every": 12,
+  "qte": true
+ },
+ "note": "v3（用这个）：通用循环 + 追 QTE + 闪避每 2 轮；v2 循环留在 loop_v2_backup",
+ "results": [
+  {
+   "time": "00:28",
+   "mode": "训练",
+   "ver": "v1",
+   "win": false,
+   "note": "330 秒脚本上限；约 240 秒粉发倒下弹「本关卡无法复活」卡住 90 秒（当时没处理）；游戏内 03:13，BOSS 拳第 1 段血剩一部分"
+  },
+  {
+   "time": "00:36",
+   "mode": "训练",
+   "ver": "v2",
+   "win": true,
+   "score": 43936,
+   "game_time": "06:53",
+   "note": "打完（结算：连击 275、耗时 06:53、得分 43936）；中途脚本 420 秒上限掐断，我暂停后续打 150 秒，不算全程无人值守；没人倒下"
+  },
+  {
+   "time": "01:34",
+   "mode": "训练",
+   "ver": "v3 追QTE",
+   "win": true,
+   "score": 45977,
+   "game_time": "03:18",
+   "hud_gone_s": 353.6,
+   "note": "全程无人值守（--train 导航→打→回记忆战场页）；QTE 84 次；比 v2（06:53 / 43936）快一半多"
+  }
+ ],
+ "real_time_note": "一场游戏内约 7 分钟、真实约 9.5 分钟（大招停表）；前 2 分钟打「年年糕糕之拳」得分 0，之后本体多管血",
+ "loop_v2_backup": {
+  "atk_per_cycle": 3,
+  "weapon_every": 1,
+  "ult_every": 2,
+  "elf_every": 4,
+  "evade_every": 3,
+  "switch_every": 12,
+  "qte": false
+ }
+}

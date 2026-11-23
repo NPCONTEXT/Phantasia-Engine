@@ -1,0 +1,44 @@
+{
+ "id": "mht3",
+ "boss": "MHT-3和平使者",
+ "difficulty": "SS",
+ "learned": "2026-10-29",
+ "boss_idx": 2,
+ "lineup": {
+  "source": "10-29 推荐阵容（整体完整度优先 ON）第 1 行全部应用（100%）；训练页 阵容攻略→官方推荐第 1 行（共 2 行），训练默认难度 SS",
+  "tab": "official",
+  "row": 1,
+  "score_ref": 31946
+ },
+ "team": [
+  "队长（粉长发，紫底）",
+  "红发",
+  "白发黑红发带（青底）"
+ ],
+ "elf": "白发蓝金兜帽人偶",
+ "buff_mode": false,
+ "tutorial": null,
+ "opening": [],
+ "loop": {
+  "atk_per_cycle": 3,
+  "weapon_every": 1,
+  "ult_every": 2,
+  "elf_every": 4,
+  "evade_every": 2,
+  "switch_every": 12,
+  "qte": false
+ },
+ "note": "v1（用这个）：不追 QTE、每 12 轮定时轮换、闪避每 2 轮；10-29 草稿：boss 名照抄本期BOSS.json（标签不变、不误判换期）；先用通用循环、不追 QTE；三人看着像 10-23 阿湿波那队（真我·人之律者 / 深空定锚·曙光 / 享乐狂宴·邀影，推断），人偶不同；左栏徽章 A 是下一关档位",
+ "results": [
+  {
+   "time": "02:05",
+   "mode": "训练",
+   "ver": "v1 不追QTE",
+   "win": true,
+   "score": 31451,
+   "game_time": "00:16",
+   "hud_gone_s": 22.5,
+   "note": "32.6 秒打赢（结算 连击 20 / 耗时 00:16 / 得分 31451，参考 31946）；训练默认难度 SS；日志 logs.nosync/mht3_1029-020436"
+  }
+ ]
+}

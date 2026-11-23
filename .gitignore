@@ -1,0 +1,28 @@
+# 运行环境（./install.sh 建的）
+venv-qt.nosync/
+.venv/
+__pycache__/
+*.pyc
+
+# 安装时现编的识字程序
+bh3_auto/ocr/ocr
+tasks/2026-10-07-绝区零日常/ocr_rev2
+
+# 运行时生成的：日志、播放记录、截图、战斗帧
+logs/
+logs.nosync/
+runs/
+shots/
+.agg.lock
+.device_serial
+
+# 各首歌自己记的状态
+tasks/2026-10-10-记忆战场/本期BOSS.json
+tasks/2026-10-10-记忆战场/lineups/
+tasks/2026-10-16-超弦空间/勾选项.json
+tasks/2026-10-16-超弦空间/profiles/lineup_mem.json
+tasks/2026-10-16-超弦空间/profiles/lineup_mem/
+tasks/2026-10-19-主动提醒/状态.json
+tasks/2026-10-19-主动提醒/remind.log
+
+.DS_Store

@@ -1,0 +1,357 @@
+{
+ "id": "edge_try",
+ "zone": "边缘区",
+ "stage": "聚变-边缘区（10-16 这期，元素环境）",
+ "lineup": "推荐阵容 热门阵容 完整度优先 ON 第 1 行一键编队（10-17 作者定）",
+ "team": [
+  "破弃孤光·逐影（队长）",
+  "白发 S",
+  "护目镜灰发 SSS"
+ ],
+ "loop": {
+  "atk_per_cycle": 3,
+  "weapon_every": 1,
+  "ult_every": 2,
+  "elf_every": 4,
+  "evade_every": 2,
+  "switch_every": 12,
+  "qte": true
+ },
+ "note": "C2 第一次试打：通用循环 + 追 QTE（记忆战场 10-15 的默认）",
+ "results": [
+  {
+   "time": "10-17 00:07",
+   "zone": "左",
+   "res": "win",
+   "game_time": "02:34",
+   "score": 6000,
+   "layer": {
+    "当前积分": "6000",
+    "战斗时长": "02:31"
+   },
+   "hud_gone_s": 229.4,
+   "rec_row1": [
+    "00:52",
+    "100%"
+   ],
+   "log": "edge_try_1017-000751",
+   "note": "C2 手动补记；开场花火误认点了两下（已在 ss_fight 里关掉）",
+   "full": true,
+   "env": "聚变·元素"
+  },
+  {
+   "time": "10-20 00:58",
+   "zone": "左",
+   "res": "win",
+   "full": true,
+   "game_time": "00:55",
+   "score": 6000,
+   "layer": {
+    "当前积分": "4 6000",
+    "战斗时长": "00:51"
+   },
+   "hud_gone_s": 105.5,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "log": "edge_try_1020-005600",
+   "env": "狙击·远程"
+  },
+  {
+   "time": "10-24 02:36",
+   "zone": "左",
+   "res": "win",
+   "full": false,
+   "game_time": "05:01",
+   "score": 3000,
+   "layer": {
+    "当前积分": "4 3000",
+    "战斗时长": "00.：35"
+   },
+   "hud_gone_s": 315.3,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "血棘·血棘",
+   "log": "edge_try_1024-023028"
+  },
+  {
+   "time": "10-27 00:34",
+   "zone": "左",
+   "res": "win",
+   "full": false,
+   "game_time": "05:01",
+   "score": 1315,
+   "layer": {
+    "当前积分": "1315",
+    "战斗时长": "05:00"
+   },
+   "hud_gone_s": 335.3,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "量子·量子",
+   "log": "edge_try_1027-002831"
+  },
+  {
+   "time": "10-27 00:41",
+   "zone": "左",
+   "res": "win",
+   "full": false,
+   "game_time": "05:01",
+   "score": 1746,
+   "layer": {
+    "当前积分": "1746",
+    "战斗时长": "05:00"
+   },
+   "hud_gone_s": 341.1,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "量子·量子",
+   "log": "edge_try_1027-003535"
+  },
+  {
+   "time": "10-27 00:50",
+   "zone": "左",
+   "res": "timeout",
+   "full": false,
+   "game_time": "05:01",
+   "score": 4139,
+   "layer": {
+    "当前积分": "4139",
+    "战斗时长": "05:00"
+   },
+   "hud_gone_s": null,
+   "row": 2,
+   "rec": [
+    null,
+    "95%"
+   ],
+   "env": "量子·量子",
+   "log": "edge_try_1027-004242"
+  },
+  {
+   "time": "11-01 02:16",
+   "zone": "左",
+   "res": "win",
+   "full": true,
+   "game_time": "01:25",
+   "score": 6000,
+   "layer": {
+    "当前积分": "• 6000",
+    "战斗时长": "01:22"
+   },
+   "hud_gone_s": 149.4,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "天敌·克制",
+   "log": "edge_try_1101-021337"
+  },
+  {
+   "time": "11-03 01:28",
+   "zone": "左",
+   "res": "win",
+   "full": true,
+   "game_time": "04:35",
+   "score": 6000,
+   "layer": {
+    "当前积分": "• 6000",
+    "战斗时长": "04:34"
+   },
+   "hud_gone_s": 356.0,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "闪耀·烁星",
+   "down_s": null,
+   "log": "edge_try_1103-012223"
+  },
+  {
+   "time": "11-07 00:00",
+   "zone": "左",
+   "res": "win",
+   "full": true,
+   "game_time": "01:29",
+   "score": 6000,
+   "layer": {
+    "当前积分": "6000",
+    "战斗时长": "01:24"
+   },
+   "hud_gone_s": 168.6,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "火·火焰",
+   "down_s": null,
+   "log": "edge_try_1106-235735"
+  },
+  {
+   "time": "11-10 02:19",
+   "zone": "左",
+   "res": "win",
+   "full": true,
+   "game_time": "01:35",
+   "score": 6000,
+   "layer": {
+    "当前积分": "• 6000",
+    "战斗时长": "01:31"
+   },
+   "hud_gone_s": 176.3,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "惧冰·冰霜",
+   "down_s": null,
+   "log": "edge_try_1110-021626"
+  },
+  {
+   "time": "11-13 23:51",
+   "zone": "左",
+   "res": "win",
+   "full": true,
+   "game_time": "01:09",
+   "score": 6000,
+   "layer": {
+    "当前积分": "• 6000",
+    "战斗时长": "01:05"
+   },
+   "hud_gone_s": 106.6,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "燃素·点燃",
+   "down_s": null,
+   "log": "edge_try_1113-234902"
+  },
+  {
+   "time": "11-16 23:52",
+   "zone": "左",
+   "res": "win",
+   "full": false,
+   "game_time": "05:01",
+   "score": 2798,
+   "layer": {
+    "当前积分": "• 2798",
+    "战斗时长": "05:00"
+   },
+   "hud_gone_s": 403.8,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "统御·统御",
+   "down_s": null,
+   "log": "edge_try_1116-234458"
+  },
+  {
+   "time": "11-17 00:00",
+   "zone": "左",
+   "res": "win",
+   "full": false,
+   "game_time": "05:01",
+   "score": 2509,
+   "layer": {},
+   "hud_gone_s": 401.6,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "统御·统御",
+   "down_s": 168.8,
+   "log": "edge_try_1116-235314"
+  },
+  {
+   "time": "11-17 00:08",
+   "zone": "左",
+   "res": "win",
+   "full": false,
+   "game_time": "05:01",
+   "score": 2832,
+   "layer": {
+    "当前积分": "2832",
+    "战斗时长": "05:00"
+   },
+   "hud_gone_s": 380.6,
+   "row": 2,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "统御·统御",
+   "down_s": null,
+   "log": "edge_try_1117-000125"
+  },
+  {
+   "time": "11-17 00:16",
+   "zone": "左",
+   "res": "win",
+   "full": false,
+   "game_time": "05:01",
+   "score": 2249,
+   "layer": {},
+   "hud_gone_s": 389.0,
+   "row": 2,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "统御·统御",
+   "down_s": 122.1,
+   "log": "edge_try_1117-000933"
+  },
+  {
+   "time": "11-21 00:11",
+   "zone": "左",
+   "res": "win",
+   "full": true,
+   "game_time": "01:19",
+   "score": 6000,
+   "layer": {
+    "当前积分": "• 6000",
+    "战斗时长": "01:16"
+   },
+   "hud_gone_s": 129.3,
+   "row": 1,
+   "rec": [
+    null,
+    "100%"
+   ],
+   "env": "虚数·虚数",
+   "down_s": null,
+   "log": "edge_try_1121-000841"
+  }
+ ],
+ "best_row": 1,
+ "best_row_env": {
+  "聚变·元素": 1,
+  "狙击·远程": 1,
+  "天敌·克制": 1,
+  "闪耀·烁星": 1,
+  "火·火焰": 1,
+  "惧冰·冰霜": 1,
+  "燃素·点燃": 1,
+  "虚数·虚数": 1
+ }
+}

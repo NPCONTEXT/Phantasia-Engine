@@ -1,0 +1,44 @@
+{
+ "id": "huodou",
+ "boss": "至阳之兽-祸斗",
+ "difficulty": "SSS",
+ "learned": "2026-11-11",
+ "boss_idx": 1,
+ "lineup": {
+  "source": "11-11 推荐阵容（整体完整度优先 ON）第 1 行全部应用（100%）；训练页 阵容攻略→官方推荐第 1 行 = 同一队（shots/m18_lineup_applied_1111.png、m18_b1_official_p1_1111.png）",
+  "tab": "official",
+  "row": 1,
+  "score_ref": 39986
+ },
+ "team": [
+  "队长（粉长发、紫底）",
+  "红发",
+  "白发红黑（青底）"
+ ],
+ "elf": "金发双马尾人偶",
+ "buff_mode": false,
+ "tutorial": null,
+ "opening": [],
+ "loop": {
+  "atk_per_cycle": 3,
+  "weapon_every": 1,
+  "ult_every": 2,
+  "elf_every": 4,
+  "evade_every": 2,
+  "switch_every": 12,
+  "qte": false
+ },
+ "note": "v1（用这个）：不追 QTE、每 12 轮定时轮换、闪避每 2 轮；11-11 训练 198 秒赢",
+ "results": [
+  {
+   "time": "02:35",
+   "mode": "训练",
+   "ver": "v1 不追QTE",
+   "win": true,
+   "score": 38893,
+   "game_time": "01:50（结算页总耗时）",
+   "hud_gone_s": 186.8,
+   "note": "198.5 秒打赢（参考 39986），余量足；日志 logs.nosync/huodou_1111-023206"
+  }
+ ]
+}

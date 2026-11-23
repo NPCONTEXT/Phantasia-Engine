@@ -1,0 +1,55 @@
+{
+ "id": "haimudaer",
+ "boss": "神机 海姆达尔",
+ "difficulty": "SSS",
+ "learned": "2026-11-21",
+ "boss_idx": 1,
+ "lineup": {
+  "source": "11-21 推荐阵容（整体完整度优先 ON）第 1 行全部应用（100%）；训练页 阵容攻略→官方推荐第 3 行 = 同一队（shots/m19_lineup_applied_1121.png、m19_b1_official_p1_1121.png）",
+  "tab": "official",
+  "row": 3,
+  "score_ref": 39960
+ },
+ "team": [
+  "队长（红白发、青底）",
+  "银发带角（金底）",
+  "深绿发（青底）"
+ ],
+ "elf": "橙金发人偶",
+ "buff_mode": false,
+ "tutorial": null,
+ "opening": [],
+ "loop": {
+  "atk_per_cycle": 3,
+  "weapon_every": 1,
+  "ult_every": 2,
+  "elf_every": 4,
+  "evade_every": 2,
+  "switch_every": 12,
+  "qte": false
+ },
+ "note": "v1（用这个）：不追 QTE，11-21 训练赢。按前两个字「神机」配档案。训练选人页按钮写「开始训练」。",
+ "results": [
+  {
+   "time": "01:25",
+   "mode": "训练",
+   "ver": "v1 不追QTE",
+   "win": true,
+   "score": null,
+   "game_time": "00:43（结算页）",
+   "hud_gone_s": 146.8,
+   "note": "154.5 秒打赢（最高连击 614；结算截图截在得分数字还在滚的时候，得分没读到，参考 39960）；日志 logs.nosync/haimudaer_1121-012213"
+  },
+  {
+   "time": "01:45",
+   "mode": "正式",
+   "ver": "v1 不追QTE",
+   "win": true,
+   "score": 39287,
+   "game_time": "00:39（结算页战斗耗时）",
+   "hud_gone_s": 128.4,
+   "note": "第 6/6 关一次赢，135.9 秒（最高连击 365）；日志 logs.nosync/haimudaer_real_1121-014303"
+  }
+ ],
+ "team_names": "逆命魔龙·降临！ / 位面武器·失序时空 / 孑遗千星（11-21 正式开战锁定框的全名，顺序照锁定框；和头像的对应按队伍顺序推断）"
+}

@@ -1,0 +1,2 @@
+# 界面环境（venv-qt.nosync）。作者用的是 Python 3.13。
+PySide6-Essentials==6.8.3

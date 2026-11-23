@@ -1,0 +1,44 @@
+{
+ "id": "bishezhe",
+ "boss": "毕舍遮",
+ "difficulty": "SSS",
+ "learned": "2026-11-05",
+ "boss_idx": 1,
+ "lineup": {
+  "source": "11-05 推荐阵容（整体完整度优先 ON）第 1 行全部应用（95%）；训练页 阵容攻略→官方推荐第 1 行（3 行以上），训练默认难度 SSS",
+  "tab": "official",
+  "row": 1,
+  "score_ref": 39986
+ },
+ "team": [
+  "队长（棕长发、金底）",
+  "金发戴护目镜",
+  "黑发（紫底）"
+ ],
+ "elf": "白发戴纱冠人偶",
+ "buff_mode": false,
+ "tutorial": null,
+ "opening": [],
+ "loop": {
+  "atk_per_cycle": 3,
+  "weapon_every": 1,
+  "ult_every": 2,
+  "elf_every": 4,
+  "evade_every": 2,
+  "switch_every": 12,
+  "qte": false
+ },
+ "note": "v1（用这个）：不追 QTE、每 12 轮定时轮换、闪避每 2 轮；11-05 草稿：boss 名照抄本期BOSS.json（标签不变、不误判换期）；先用通用循环、不追 QTE",
+ "results": [
+  {
+   "time": "02:17",
+   "mode": "训练",
+   "ver": "v1 不追QTE",
+   "win": true,
+   "score": 39334,
+   "game_time": "00:33（识字读的，存疑）",
+   "hud_gone_s": 170.9,
+   "note": "178.6 秒打赢（结算 最高连击 661 / 得分 39334，参考 39986）；没人倒；fox_stage 误认 4 次没影响；日志 logs.nosync/bishezhe_1105-021752"
+  }
+ ]
+}

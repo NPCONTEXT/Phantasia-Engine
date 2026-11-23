@@ -1,0 +1,55 @@
+{
+ "id": "feiyu",
+ "boss": "绯狱丸",
+ "difficulty": "SS",
+ "learned": "2026-11-05",
+ "boss_idx": 2,
+ "lineup": {
+  "source": "11-05 让出白发青底给陨影冰骸：训练页 阵容攻略→官方推荐第 2 行（白发紫底队长 / 棕猫耳 Sp / 浅蓝发 Sp + 粉发光环人偶，参考 31946）；正式选人页照样一键编队",
+  "tab": "official",
+  "row": 2,
+  "force": true,
+  "score_ref": 31946
+ },
+ "team": [
+  "队长（白发紫底）",
+  "棕猫耳 Sp",
+  "浅蓝发 Sp"
+ ],
+ "elf": "粉发光环人偶",
+ "buff_mode": false,
+ "tutorial": null,
+ "opening": [],
+ "loop": {
+  "atk_per_cycle": 3,
+  "weapon_every": 1,
+  "ult_every": 2,
+  "elf_every": 4,
+  "evade_every": 2,
+  "switch_every": 12,
+  "qte": false
+ },
+ "note": "11-05 改官方第 2 行重学（原第 1 行 粉长发 / 红发 / 白发青底 + 红发人偶 37.4 秒赢 31166）；v1（用这个）：不追 QTE、每 12 轮定时轮换、闪避每 2 轮；11-05 草稿：boss 名照抄本期BOSS.json（标签不变、不误判换期）；先用通用循环、不追 QTE",
+ "results": [
+  {
+   "time": "02:22",
+   "mode": "训练",
+   "ver": "v1 不追QTE",
+   "win": true,
+   "score": 31166,
+   "game_time": "00:11",
+   "hud_gone_s": 27.7,
+   "note": "37.4 秒打赢（结算 最高连击 16 / 战斗耗时 00:11 / 得分 31166，参考 31946）；训练默认难度 SS；日志 logs.nosync/feiyu_1105-022201"
+  },
+  {
+   "time": "04:07",
+   "mode": "训练",
+   "ver": "官方第 2 行 v1 不追QTE",
+   "win": true,
+   "score": null,
+   "game_time": null,
+   "hud_gone_s": 70.8,
+   "note": "80.6 秒打赢（结算截图在动画里，得分没读到）；队伍 白发紫底队长（无名游侠的旅途）/ 棕猫耳 Sp / 浅蓝发 Sp + 粉发光环人偶（shots/m17_feiyu_row2_1105.png）；日志 logs.nosync/feiyu_1105-040746"
+  }
+ ]
+}

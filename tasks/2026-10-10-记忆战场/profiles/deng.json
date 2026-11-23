@@ -1,0 +1,44 @@
+{
+ "id": "deng",
+ "boss": "灯",
+ "difficulty": "SS",
+ "learned": "2026-11-11",
+ "boss_idx": 2,
+ "lineup": {
+  "source": "11-11 推荐阵容（整体完整度优先 ON）第 1 行全部应用（100%）；训练页 阵容攻略→官方推荐第 1 行 = 同一队（shots/m18_lineup_applied_1111.png、m18_b2_official_p1_1111.png）",
+  "tab": "official",
+  "row": 1,
+  "score_ref": 31946
+ },
+ "team": [
+  "队长（红白发、青底）",
+  "银发带角（金底）",
+  "深绿发（青底）"
+ ],
+ "elf": "橙金发人偶",
+ "buff_mode": false,
+ "tutorial": null,
+ "opening": [],
+ "loop": {
+  "atk_per_cycle": 3,
+  "weapon_every": 1,
+  "ult_every": 2,
+  "elf_every": 4,
+  "evade_every": 2,
+  "switch_every": 12,
+  "qte": false
+ },
+ "note": "v1（用这个）：不追 QTE；11-11 训练 38 秒赢。boss 名写「灯」：识字读成「「灯/」「「灯」都配得上，标签「灯 SS」",
+ "results": [
+  {
+   "time": "02:37",
+   "mode": "训练",
+   "ver": "v1 不追QTE",
+   "win": true,
+   "score": 31397,
+   "game_time": "00:20（结算页总耗时）",
+   "hud_gone_s": 30.0,
+   "note": "37.7 秒打赢（参考 31946）；日志 logs.nosync/deng_1111-023632"
+  }
+ ]
+}

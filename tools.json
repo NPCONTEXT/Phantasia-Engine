@@ -1,0 +1,692 @@
+{
+  "app": {
+    "name": "幻想引擎",
+    "logo": "logo.png",
+    "mark": "mark.png",
+    "version": "4.1.7"
+  },
+  "tools": [
+    {
+      "id": "bh3_daily",
+      "name": "崩坏3 · 日常/周常",
+      "description": "签到→一键减负(周常有就做,万象虚境拉满10次,跳过冒险委托)→舰团委托→材料减负→家园金币/打工/远征(体力不够先领任务体力再派)→每周分享(点微博分享再关掉网页)→任务领取+礼盒(每日任务给60体力)→冒险委托(周一四六开新一轮,每周先激活后崩坏书第二章,体力不够从储存体力按需取,能接几个接几个,满5个一键减负,接了再领一次任务奖励)→商店(后勤终端金币商品全买不刷新,虚境商店每周1星石时序通行证)→活动领取→bp战令(历练箱+每日等级奖励)→邮件一键领取",
+      "env": "none",
+      "workdir": "tasks/2026-09-29-崩3日常任务",
+      "command": [
+        "python",
+        "bh3_daily.py"
+      ],
+      "python": "../../bh3_auto/.venv/bin/python",
+      "precheck": [
+        "bh3_daily.py",
+        "../../bh3_auto/.venv/bin/python",
+        "../../bh3_auto/ocr/ocr"
+      ],
+      "need_device": true,
+      "tasks": [
+        "签到弹窗",
+        "一键减负(周常)",
+        "舰团委托",
+        "材料活动",
+        "家园金币/打工/远征",
+        "每周分享",
+        "任务领取+礼盒",
+        "冒险委托(水晶>镜面/技能材料>黑白核心>任选)",
+        "商店(后勤终端+虚境)",
+        "活动领取",
+        "bp战令(历练箱+等级奖励)",
+        "邮件一键领取"
+      ],
+      "report_steps": true,
+      "album": "崩坏3",
+      "package": "com.miHoYo.enterprise.NGHSoD"
+    },
+    {
+      "id": "bh3_memorial_arena",
+      "name": "崩坏3 · 记忆战场(周常)",
+      "description": "进记忆战场 → 三个 BOSS 依次战场减负 → 认 BOSS：学过的按档案一键编队正式打（打输同模式再试 1 次，再输开增益模式试 2 次）→ 确认结算。本期已打完的跳过，所以每天放进顺序播放也不会重复打。没学过的新 BOSS 只报「没学过」不打（学法见任务目录 使用说明.md）。不追分数；减负和每场正式战斗都占 1 次今日挑战次数。",
+      "env": "none",
+      "workdir": "tasks/2026-10-10-记忆战场",
+      "command": [
+        "python",
+        "ma_run.py",
+        "--subitems"
+      ],
+      "python": "../../bh3_auto/.venv/bin/python",
+      "precheck": [
+        "ma_run.py",
+        "ma_battle.py",
+        "ma_nav.py",
+        "touch.py",
+        "goto_row.py",
+        "lineup_scan.py",
+        "profiles",
+        "tpl/pause.png",
+        "../../bh3_auto/.venv/bin/python",
+        "../../bh3_auto/ocr/ocr",
+        "../../bh3_auto/lib/frame_stream.py",
+        "../2026-09-29-崩3日常任务/bh3_daily.py",
+        "/opt/homebrew/bin/ffmpeg"
+      ],
+      "need_device": true,
+      "tasks": [
+        "进记忆战场",
+        "战场减负"
+      ],
+      "report_steps": true,
+      "album": "崩坏3",
+      "package": "com.miHoYo.enterprise.NGHSoD",
+      "subitems": {
+        "file": "本期BOSS.json",
+        "head": [
+          "进记忆战场",
+          "战场减负"
+        ],
+        "arg": "--pick"
+      },
+      "report": {
+        "outcomes": [
+          {
+            "match": "本期结算中",
+            "text": "记忆战场本期结算中，没打（新一期开了下次播放再打）",
+            "bad": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "bh3_superstring",
+      "name": "崩坏3 · 超弦空间",
+      "description": "进超弦空间（每周三、周日 22:00 结算，没开放就只报不打）→ 读本期状态（剩余时间、积分、小组排名、预计奖杯）→ 勾了「主环境三区」：边缘区、密集区没打满就打，高危区凹分（每次最多 5 场、连续 2 场没提高就停）；勾了「特异区」：没打满就打 → 三区都满了领深渊任务。配队用推荐阵容「官方推荐」完整度优先第一行一键编队；同一行两场没打满或没明显提升就换下一行，好用的那行记下来下次先用。打满的区自动跳过，每天放进顺序播放也不会白打。",
+      "env": "none",
+      "workdir": "tasks/2026-10-16-超弦空间",
+      "command": [
+        "python",
+        "ss_run.py",
+        "--subitems"
+      ],
+      "python": "../../bh3_auto/.venv/bin/python",
+      "precheck": [
+        "ss_run.py",
+        "ss_nav.py",
+        "ss_fight.py",
+        "ss_battle.py",
+        "profiles",
+        "../2026-10-10-记忆战场/ma_battle.py",
+        "../2026-10-10-记忆战场/ma_run.py",
+        "../2026-10-10-记忆战场/ma_nav.py",
+        "../2026-10-10-记忆战场/touch.py",
+        "../2026-10-10-记忆战场/tpl/pause.png",
+        "../../bh3_auto/.venv/bin/python",
+        "../../bh3_auto/ocr/ocr",
+        "../../bh3_auto/lib/frame_stream.py",
+        "../2026-09-29-崩3日常任务/bh3_daily.py",
+        "/opt/homebrew/bin/ffmpeg"
+      ],
+      "need_device": true,
+      "tasks": [
+        "进超弦空间",
+        "读本期状态"
+      ],
+      "report_steps": true,
+      "album": "崩坏3",
+      "package": "com.miHoYo.enterprise.NGHSoD",
+      "subitems": {
+        "file": "勾选项.json",
+        "head": [
+          "进超弦空间",
+          "读本期状态"
+        ],
+        "arg": "--pick"
+      },
+      "report": {
+        "facts": [
+          {
+            "label": "本期 {1}",
+            "match": "本期状态（(?:开始|结束)）：(.+)$"
+          },
+          {
+            "label": "{1}",
+            "match": "(提醒：.+)$"
+          }
+        ],
+        "outcomes": [
+          {
+            "match": "本期：积分 \\S+ → (\\S+)；小组第 (\\S+) 名；预计奖杯 (\\S+)；",
+            "text": "本期积分 {1}、小组第 {2} 名、预计奖杯 {3}",
+            "bad": false
+          },
+          {
+            "match": "本期：.*预计奖杯 (-\\d+)；",
+            "text": "按现在的排名结算会扣奖杯（{1}）",
+            "bad": true
+          },
+          {
+            "match": "本期未开放",
+            "text": "超弦空间本期未开放（每周三、周日 22:00 结算后到下期开放前）",
+            "bad": false
+          },
+          {
+            "match": "本期结算中",
+            "text": "超弦空间结算中（每周三、周日 22:00–22:30），没打",
+            "bad": false
+          },
+          {
+            "match": "本期准备中（上期已结算、下期还没开：准备中\\s*(.+?)；",
+            "text": "超弦空间本期准备中（{1}后开），没打",
+            "bad": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "nikke_daily",
+      "name": "妮姬 · 日常",
+      "description": "竖屏国服《胜利女神：新的希望》一键日常（游戏每天 4:00 刷新）：\n登录弹窗签到 → 前哨基地收获+免费歼灭 → 派遣 → 邮箱 → 好友赠送 → 批量咨询 → 竞技场挂机奖励+新人竞技场 5 次快速战斗 → 模拟室快速模拟 → 异常个体拦截战 3 次快速战斗 → 无限之塔试打一层 → 单人突击（有活动才打：先自动编队最高战力，每天 3 次打当前关；第 7 关打过后每天用快速战斗扫掉 3 次、不真打；最后那关只打 1 次（5 场约 18 分钟），有最高记录就整期不打）→ 免费招募 → 普通商店免费买/免费刷新 → 竞技场商店（手册选择宝箱+模组高级增强器）→ 每日/每周任务 → 通行证（放最后）。\n花珠宝/付费的按钮一律不点；特殊竞技场不打。",
+      "env": "none",
+      "workdir": "tasks/2026-10-06-妮姬日常",
+      "command": [
+        "python",
+        "nikke_daily.py"
+      ],
+      "python": "../../bh3_auto/.venv/bin/python",
+      "precheck": [
+        "nikke_daily.py",
+        "../../bh3_auto/.venv/bin/python",
+        "../../bh3_auto/ocr/ocr"
+      ],
+      "need_device": true,
+      "tasks": [
+        "登录弹窗奖励",
+        "前哨基地：收获+歼灭",
+        "派遣：全部领取+全部派遣",
+        "邮箱",
+        "好友：赠送友情点",
+        "咨询：批量咨询",
+        "竞技场：挂机奖励+新人竞技场5次",
+        "模拟室：快速模拟",
+        "异常个体拦截战：快速战斗",
+        "无限之塔：试打一层",
+        "单人突击（有活动才打）",
+        "招募：每日免费一次",
+        "普通商店：免费买+免费刷新",
+        "竞技场商店：手册选择宝箱+模组高级增强器",
+        "每日/每周任务领取",
+        "通行证领取(放最后)"
+      ],
+      "report_steps": true,
+      "album": "妮姬",
+      "package": "com.tencent.nikke"
+    },
+    {
+      "id": "nikke_coop",
+      "name": "妮姬 · 协同作战",
+      "description": "竖屏国服《胜利女神：新的希望》协同作战（限时活动，国服一般周五 12:00 到周日 23:59:59）：\n开着时用掉当天的剩余奖励次数（每天 3 次，4:00 刷新）：开始匹配 → 只选普通难度（自动战斗）→ 接受 → 准备（用默认打勾的战斗力最高那个）→ 等打完 → 结算，次数用完为止。\n没开活动就跳过；挑战难度、建队伍、废铁商店都不碰。",
+      "env": "none",
+      "workdir": "tasks/2026-11-01-妮姬协同作战",
+      "command": [
+        "python",
+        "nikke_coop.py"
+      ],
+      "python": "../../bh3_auto/.venv/bin/python",
+      "precheck": [
+        "nikke_coop.py",
+        "../2026-10-06-妮姬日常/nikke_daily.py",
+        "../../bh3_auto/.venv/bin/python",
+        "../../bh3_auto/ocr/ocr"
+      ],
+      "need_device": true,
+      "tasks": [
+        "进协同作战",
+        "普通难度：打完今天的奖励次数"
+      ],
+      "report_steps": true,
+      "album": "妮姬",
+      "package": "com.tencent.nikke",
+      "report": {
+        "outcomes": [
+          {
+            "match": "大厅没有「协同作战」入口",
+            "text": "协同作战没开（国服一般周五 12:00 到周日 23:59:59），跳过",
+            "bad": false
+          },
+          {
+            "match": "不在开放期",
+            "text": "协同作战不在开放期（奖励兑换 / 排名结算期间），跳过",
+            "bad": false
+          },
+          {
+            "match": "协同作战：打了 (\\d+) 局，剩余奖励次数 (\\S+)",
+            "text": "协同作战打了 {1} 局，剩余奖励次数 {2}",
+            "bad": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "zzz_daily",
+      "name": "绝区零 · 日常",
+      "description": "横屏国服《绝区零》一键日常（游戏每天 4:00 刷新）：\n启动+签到弹窗 → 喝茶（汀曼大师，选第二个饮品，+60 电量）→ 零食盲盒 → 录像店经营（宣传员安比 + 推荐上架 + 开始营业）→ 实战模拟室·基础材料·赏金专项，默认配队，每场 100 电量，电量够就打，最多 3 场（自带简单战斗：先打完整套普攻连段，大招 / 强化特殊技亮了就放）→ 领日常活跃度奖励 → 丽都周纪：九宫格绿格逐个领、右侧积分特赏进度条领一下 → 丽都城募：成长任务今日 / 本周 / 本期有可领就点「全部领取」。\n花菲林 / 以太电池 / 补充电量的按钮一律不点；不用游戏的「自动战斗」（要消耗道具）。",
+      "env": "none",
+      "workdir": "tasks/2026-10-07-绝区零日常",
+      "command": [
+        "python",
+        "zzz_daily.py"
+      ],
+      "python": "../../bh3_auto/.venv/bin/python",
+      "precheck": [
+        "zzz_daily.py",
+        "../../bh3_auto/.venv/bin/python",
+        "ocr_rev2",
+        "tpl/atk.png",
+        "tpl/return.png"
+      ],
+      "need_device": true,
+      "tasks": [
+        "启动+签到弹窗",
+        "喝茶(+60电量)",
+        "零食盲盒",
+        "录像店经营(安比+推荐上架)",
+        "实战模拟室·赏金专项",
+        "领日常活跃度奖励",
+        "丽都周纪：周常领取",
+        "丽都城募：成长任务领取"
+      ],
+      "report_steps": true,
+      "album": "绝区零",
+      "package": "com.miHoYo.Nap"
+    },
+    {
+      "id": "bh3_elysium_fuhua",
+      "name": "崩坏3 · 乐土(自动接管)",
+      "description": "从主界面直接播放：自动进乐土（侵蚀×2.5、按所选角色的口味补勾增益）→ 减负战斗 → 开战前在备战页核对出战的是不是选的角色（不是就停下说明）→ 战斗、选刻印 / 核心 / 锚点、找门换层、15–16 层商店按角色口味采购 → 17 层 20000 分结算、领九档周常 → 回主界面。本周九档已领就不开新局。也可以停在挑战里或暂停页接着打。\n角色在「当前角色」里换，一次只能选一个；每个角色一份档案（bh3_auto/elysium_roles/），「待实测」的角色还没整轮跑通过。\n每层找门累计120秒，最多三次脱困；总运行30分钟。异常会保存现场并核验暂停，可查看日志后接管继续。",
+      "env": "none",
+      "workdir": "bh3_auto",
+      "command": [
+        ".venv/bin/python",
+        "scripts/master.py",
+        "--resume",
+        "--from-main",
+        "--home"
+      ],
+      "precheck": [
+        ".venv/bin/python",
+        "scripts/master.py",
+        "scripts/er_runtime.py",
+        "scripts/er_entry.py",
+        "elysium_roles/fuhua.py",
+        "elysium_roles/yusheng.py",
+        "scripts/er_role.py",
+        "scripts/find_door_simple.py",
+        "scripts/shop_buy.py",
+        "lib/frame_stream.py",
+        "lib/door_model.py",
+        "models/best.onnx",
+        "ocr/ocr",
+        "assets/seals2",
+        "/opt/homebrew/bin/ffmpeg"
+      ],
+      "need_device": true,
+      "tasks": [
+        "进乐土：主界面→出击→挑战→往世乐土→快速出击→深层序列→（侵蚀、选增益）→减负战斗→核对出战角色→开始战斗",
+        "战斗：普攻连按、大招与支援",
+        "刻印：按卡片分组选择并确认",
+        "核心刻印选择",
+        "层末锚点选择",
+        "找门：扫描、跟踪、短步靠近与有限脱困",
+        "进门：核对门名并验证换层",
+        "商店：按商品售罄和银币扣款验收采购",
+        "出店：验证返回场景并找下一扇门",
+        "剧情跳过与确认",
+        "末层：20000分结算并核验九档周常",
+        "收尾：逐级返回到主界面"
+      ],
+      "album": "崩坏3",
+      "report": {
+        "stages": [
+          {
+            "task": 1,
+            "match": "\"event\":\\s*\"(?:entry_progress|entry_weekly|buffs_plan|buffs_ok|buffs_partial|buff_toggle|entry_started|role_verified|role_unchecked)\""
+          },
+          {
+            "task": 2,
+            "match": "\"event\":\\s*\"observe\".*\"state\":\\s*\"battle\""
+          },
+          {
+            "task": 3,
+            "match": "\"event\":\\s*\"select_seal\".*\"core\":\\s*false"
+          },
+          {
+            "task": 4,
+            "match": "\"event\":\\s*\"select_seal\".*\"core\":\\s*true"
+          },
+          {
+            "task": 5,
+            "match": "\"event\":\\s*\"(?:select_anchor|refresh_anchor)\""
+          },
+          {
+            "task": 6,
+            "match": "\"event\":\\s*\"(?:track_door|recover)\""
+          },
+          {
+            "task": 7,
+            "match": "\"event\":\\s*\"enter_(?:attempt|pending|verified)\""
+          },
+          {
+            "task": 8,
+            "match": "\"event\":\\s*\"(?:purchase_verified|shop_refresh_verified|shop_done)\"|\"event\":\\s*\"observe\".*\"state\":\\s*\"shop\""
+          },
+          {
+            "task": 9,
+            "match": "\"event\":\\s*\"shop_exited\""
+          },
+          {
+            "task": 10,
+            "match": "\"event\":\\s*\"observe\".*\"state\":\\s*\"skip(?:_confirm)?\""
+          },
+          {
+            "task": 11,
+            "match": "\"event\":\\s*\"(?:settlement_verified|complete)\"|\"event\":\\s*\"observe\".*\"state\":\\s*\"(?:settle_confirm|result|reward)\""
+          },
+          {
+            "task": 12,
+            "match": "\"event\":\\s*\"(?:weekly_done|home_verified)\""
+          }
+        ],
+        "facts": [
+          {
+            "label": "没核对出战角色",
+            "match": "\"event\":\\s*\"role_unchecked\""
+          },
+          {
+            "label": "第 {1} 层",
+            "match": "\"event\":\\s*\"progress\".*\"floor\":\\s*(\\d+)",
+            "total": 17,
+            "progress": "pos",
+            "progress_label": "第 {n} / {total} 层"
+          },
+          {
+            "label": "积分 {1}",
+            "match": "\"event\":\\s*\"progress\".*\"score\":\\s*(\\d+)"
+          },
+          {
+            "label": "已验证 {n} 次换层",
+            "kind": "count",
+            "match": "\"event\":\\s*\"enter_verified\""
+          },
+          {
+            "label": "已选刻印 {n} 个",
+            "kind": "count",
+            "match": "\"event\":\\s*\"select_seal\""
+          },
+          {
+            "label": "已核验采购 {n} 个",
+            "kind": "count",
+            "match": "\"event\":\\s*\"purchase_verified\""
+          }
+        ],
+        "outcomes": [
+          {
+            "match": "\"event\":\\s*\"weekly_done\"",
+            "text": "本周九档已领，没开新一局"
+          },
+          {
+            "match": "\"event\":\\s*\"complete\"",
+            "text": "20000分结算完成，九档周常已领取"
+          },
+          {
+            "match": "\"event\":\\s*\"complete\".*\"settlement_verified\":\\s*false",
+            "text": "九档周常已领取，但这次没核到结算结果页"
+          },
+          {
+            "match": "\"event\":\\s*\"terminated\".*\"reason\":\\s*\"([^\"\\n]*)\"",
+            "text": "已停止：{1}",
+            "bad": true
+          },
+          {
+            "match": "\"event\":\\s*\"paused\"",
+            "text": "当前挑战已暂停"
+          },
+          {
+            "match": "\"event\":\\s*\"outside_challenge\"",
+            "text": "请先进入当前乐土挑战"
+          }
+        ]
+      },
+      "package": "com.miHoYo.enterprise.NGHSoD",
+      "roles": {
+        "arg": "--role",
+        "default": "fuhua",
+        "items": [
+          {
+            "id": "fuhua",
+            "label": "符华·渡尘之羽",
+            "desc": "元素普攻 · 低血流",
+            "py": "fh",
+            "tag": "已实测"
+          },
+          {
+            "id": "yusheng",
+            "label": "愈生佑翎",
+            "desc": "雷电普攻 · 天慧路线（角色教学推荐一）",
+            "py": "ysyl",
+            "tag": "已实测"
+          }
+        ]
+      }
+    },
+    {
+      "id": "bh3_elysium_shallow",
+      "name": "崩坏3 · 乐土浅层(自动刷星)",
+      "description": "乐土浅层自动刷星（无找门/无选刻印，纯战斗循环）\n【使用前】请停在乐土浅层「角色备战页」（第一个页面：能看到当前挑战角色/\n  难度选择/三档星级），并确认出战角色已配置好——脚本会自动点两次\n  「开始战斗」（备战页→队伍配置页→战斗）\n· 备战页 OCR 识别角色 → 按角色打法表自动战斗\n· 三档刷星：安全→普通→危险，每档打到三星；未三星自动重打（上限5次）\n· 危险档三星达成 → 自动停止（核心奖励已到手）\n· 结算页自动跳过（弹窗/统计页均点空白处）\n· 兜底：异常自愈 / 页面识别等待 / 锁检测\n· 目前已适配角色：愈生佑翎、窈窕谍影（打法表 rotations.py，可扩展）",
+      "env": "none",
+      "workdir": "bh3_auto",
+      "command": [
+        ".venv/bin/python",
+        "scripts/shallow_loop.py",
+        "40"
+      ],
+      "precheck": [
+        ".venv/bin/python",
+        "scripts/shallow_loop.py",
+        "scripts/shallow_battle.py",
+        "rotations.py",
+        "assets/seals2/ui_attack_ring_shallow.png"
+      ],
+      "need_device": true,
+      "tasks": [
+        "备战页识别(角色OCR / 三档星级 / 锁定 / 目标档)",
+        "选档并开始(安全→普通→危险, 未三星自动重打, 上限5次)",
+        "队伍配置页 → 开始战斗",
+        "自动战斗(按角色打法表, 见 rotations.py)",
+        "波次切换 → 继续打",
+        "结算页自动跳过(点空白处)",
+        "加载过场(点击加速)",
+        "危险档三星 → 自动停止"
+      ],
+      "album": "崩坏3",
+      "report": {
+        "stages": [
+          {
+            "task": 1,
+            "match": "页面: prep|角色=.*星级="
+          },
+          {
+            "task": 2,
+            "match": "选档「"
+          },
+          {
+            "task": 3,
+            "match": "页面: team|队伍配置页"
+          },
+          {
+            "task": 4,
+            "match": "页面: battle|\\[战斗\\] (开启星之环|.*线程启动)"
+          },
+          {
+            "task": 5,
+            "match": "波次切换"
+          },
+          {
+            "task": 6,
+            "match": "页面: result|结算页|挑战结束"
+          },
+          {
+            "task": 7,
+            "match": "页面: unknown|未知页面"
+          },
+          {
+            "task": 8,
+            "match": "三星达成|全部可达档位三星"
+          }
+        ],
+        "facts": [
+          {
+            "label": "星级 安全 {1} · 普通 {2} · 危险 {3}",
+            "match": "'safe': (\\d).*'normal': (\\d).*'danger': (\\d)",
+            "total": 9,
+            "progress": "amount",
+            "progress_label": "星级 {n} / {total}"
+          },
+          {
+            "label": "已打 {n} 场",
+            "kind": "count",
+            "match": "选档「"
+          },
+          {
+            "label": "角色 {1} · 打法 {2}",
+            "match": "角色=(\\S+) 打法=(\\S+)"
+          },
+          {
+            "label": "当前档位 {1}（第 {2} 次）",
+            "match": "选档「(.+?)」\\(第(\\d+)次\\)"
+          },
+          {
+            "label": "上一场用时 {1} 秒",
+            "match": "挑战结束，已回备战页（(\\d+)s）"
+          }
+        ],
+        "outcomes": [
+          {
+            "match": "危险档三星达成",
+            "text": "危险档三星达成，核心奖励已到手"
+          },
+          {
+            "match": "全部可达档位三星",
+            "text": "可达档位全部三星（危险档未解锁）"
+          },
+          {
+            "match": "(\\S+) 重打 (\\d+) 次仍未三星",
+            "text": "{1}档重打 {2} 次仍未三星",
+            "bad": true
+          },
+          {
+            "match": "\\[结束\\] 循环上限",
+            "text": "到了循环上限还没刷满三星",
+            "bad": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "bh3_elysium_shallow_farm",
+      "name": "崩坏3 · 乐土浅层(危险档无限刷)",
+      "description": "乐土浅层 FARM 模式：三档达成后无限重复刷「危险」档。\n【使用前】同上——停在角色备战页且出战角色已配置好。\n· 未达成时按正常刷星（安全→普通→危险）\n· 危险档三星达成后 → 继续反复打危险档（不停止）\n· 想停下来直接点「退出(停止全部)」\n· 与「乐土浅层(自动刷星)」的区别：那个达成即停，这个无限循环",
+      "env": "none",
+      "workdir": "bh3_auto",
+      "command": [
+        ".venv/bin/python",
+        "scripts/shallow_loop.py",
+        "999",
+        "--farm"
+      ],
+      "precheck": [
+        ".venv/bin/python",
+        "scripts/shallow_loop.py",
+        "rotations.py"
+      ],
+      "need_device": true,
+      "tasks": [
+        "备战页识别(角色OCR / 星级 / 锁定)",
+        "选档并开始(未达成时先正常刷星: 安全→普通→危险)",
+        "队伍配置页 → 开始战斗",
+        "自动战斗(按角色打法表)",
+        "波次切换 → 继续打",
+        "结算页自动跳过",
+        "加载过场(点击加速)",
+        "FARM 模式：达成后无限重复刷危险档(不会自己停)"
+      ],
+      "album": "崩坏3",
+      "report": {
+        "stages": [
+          {
+            "task": 1,
+            "match": "页面: prep|角色=.*星级="
+          },
+          {
+            "task": 2,
+            "match": "选档「"
+          },
+          {
+            "task": 3,
+            "match": "页面: team|队伍配置页"
+          },
+          {
+            "task": 4,
+            "match": "页面: battle|\\[战斗\\] (开启星之环|.*线程启动)"
+          },
+          {
+            "task": 5,
+            "match": "波次切换"
+          },
+          {
+            "task": 6,
+            "match": "页面: result|结算页|挑战结束"
+          },
+          {
+            "task": 7,
+            "match": "页面: unknown|未知页面"
+          },
+          {
+            "task": 8,
+            "match": "FARM 模式"
+          }
+        ],
+        "facts": [
+          {
+            "label": "已打 {n} 场",
+            "kind": "count",
+            "match": "选档「"
+          },
+          {
+            "label": "星级 安全 {1} · 普通 {2} · 危险 {3}",
+            "match": "'safe': (\\d).*'normal': (\\d).*'danger': (\\d)"
+          },
+          {
+            "label": "角色 {1} · 打法 {2}",
+            "match": "角色=(\\S+) 打法=(\\S+)"
+          },
+          {
+            "label": "当前档位 {1}（第 {2} 次）",
+            "match": "选档「(.+?)」\\(第(\\d+)次\\)"
+          },
+          {
+            "label": "上一场用时 {1} 秒",
+            "match": "挑战结束，已回备战页（(\\d+)s）"
+          }
+        ],
+        "outcomes": [
+          {
+            "match": "(\\S+) 重打 (\\d+) 次仍未三星",
+            "text": "{1}档重打 {2} 次仍未三星",
+            "bad": true
+          },
+          {
+            "match": "\\[结束\\] 循环上限",
+            "text": "到了循环上限，自动停下"
+          }
+        ]
+      }
+    }
+  ]
+}

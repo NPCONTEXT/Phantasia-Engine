@@ -1,0 +1,55 @@
+{
+ "id": "bachongxia",
+ "boss": "八重葭",
+ "difficulty": "SS",
+ "learned": "2026-11-21",
+ "boss_idx": 2,
+ "lineup": {
+  "source": "11-21 推荐阵容（整体完整度优先 ON）第 1 行全部应用（100%）；训练页 阵容攻略→官方推荐第 3 行 = 同一队（shots/m19_lineup_applied_1121.png、m19_b2_official_p1_1121.png）",
+  "tab": "official",
+  "row": 3,
+  "score_ref": 31840
+ },
+ "team": [
+  "队长（蓝灰发 Sp、粉底）",
+  "白发红眼（紫底）",
+  "浅蓝发 Sp（蓝底）"
+ ],
+ "elf": "白发橙星人偶",
+ "buff_mode": false,
+ "tutorial": null,
+ "opening": [],
+ "loop": {
+  "atk_per_cycle": 3,
+  "weapon_every": 1,
+  "ult_every": 2,
+  "elf_every": 4,
+  "evade_every": 2,
+  "switch_every": 12,
+  "qte": false
+ },
+ "note": "v1（用这个）：不追 QTE，11-21 训练赢。游戏里的名字是「八重霞」，11-19、11-20 两轮识字读成「八重葭」（11-21 读成「八重霞」）；boss 名照抄本期BOSS.json 的读法，标签才和幻想引擎名单一字不差；按前两个字「八重」配，两种读法都配得上。训练选人页按钮写「开始训练」。",
+ "results": [
+  {
+   "time": "01:21",
+   "mode": "训练",
+   "ver": "v1 不追QTE",
+   "win": true,
+   "score": 29537,
+   "game_time": "00:36（结算页战斗耗时）",
+   "hud_gone_s": 88.4,
+   "note": "97.9 秒打赢（最高连击 41，参考 31840）；日志 logs.nosync/bachongxia_1121-011931"
+  },
+  {
+   "time": "01:41",
+   "mode": "正式",
+   "ver": "v1 不追QTE",
+   "win": true,
+   "score": 29999,
+   "game_time": "00:18（结算页战斗耗时）",
+   "hud_gone_s": 70.7,
+   "note": "第 5/5 关一次赢，80.5 秒（最高连击 90）；日志 logs.nosync/bachongxia_real_1121-014021"
+  }
+ ],
+ "team_names": "天行·绘星之卷 / 月下誓约·予爱以心 / 糖露星霜（11-21 正式开战锁定框的全名，顺序照锁定框；和头像的对应按队伍顺序推断）"
+}
